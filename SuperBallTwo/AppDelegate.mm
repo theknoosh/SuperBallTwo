@@ -10,8 +10,8 @@
 
 #import "AppDelegate.h"
 #import "GameConfig.h"
-#import "HelloWorldLayer.h"
 #import "RootViewController.h"
+#import "GameLayer.h"
 
 @implementation AppDelegate
 
@@ -63,9 +63,12 @@
 	//
 	//
 	EAGLView *glView = [EAGLView viewWithFrame:[window bounds]
-								   pixelFormat:kEAGLColorFormatRGB565	// kEAGLColorFormatRGBA8
+								   pixelFormat:kEAGLColorFormatRGBA8	// kEAGLColorFormatRGBA8
 								   depthFormat:0						// GL_DEPTH_COMPONENT16_OES
 						];
+    
+    // Premultiplied Alpha (needed for .pvr images)
+    [CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
 	
 	// attach the openglView to the director
 	[director setOpenGLView:glView];
@@ -111,7 +114,7 @@
 	[self removeStartupFlicker];
 	
 	// Run the intro Scene
-	[[CCDirector sharedDirector] runWithScene: [HelloWorldLayer scene]];
+	[[CCDirector sharedDirector] runWithScene: [GameLayer scene]];
 }
 
 
