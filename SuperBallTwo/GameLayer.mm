@@ -6,14 +6,14 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#define JUMP_IMPULSE 6.0f
+#define JUMP_IMPULSE 10.5f
 
 #import "GameLayer.h"
 #import "GB2DebugDrawLayer.h"
 #import "GB2Sprite.h"
 #import "Ball.h"
 #import "Rock.h"
-#import "Floor.h"
+#import "Launcher.h"
 
 @implementation GameLayer
 
@@ -34,39 +34,35 @@
         background.anchorPoint = ccp(0,0);
         background.position = ccp(0,0);
         
-        // Setup left Pod
-        leftPod = [CCSprite spriteWithSpriteFrameName:@"leftPod.png"];
-        [self addChild:leftPod z:2];
-        leftPod.anchorPoint = ccp(0, 0);
-        leftPod.position = ccp(0, 0);
+        // Initial Test for launcher
+        launcher = [[[Launcher alloc] initWithGameLayer:self] autorelease];
+        // launcher.anchorPoint = ccp(200,386);
+        [self addChild:[launcher ccNode] z:25];
+        [launcher setPhysicsPosition:b2Vec2(.5,0)];
         
-        // Setup right Pod
-        rightPod = [CCSprite spriteWithSpriteFrameName:@"rightPod.png"];
-        [self addChild:rightPod z:2];
-        rightPod.anchorPoint = ccp(0, 0);
-        rightPod.position = ccp(157, 0);
+        // Setup for the bridge
+        bridge = [CCSprite spriteWithSpriteFrameName:@"Bridge.png"];
+        [self addChild:bridge];
+        bridge.position = ccp(160,300);
         
-        /* // Setup Ejector Mound
-        ejector = [CCSprite spriteWithSpriteFrameName:@"mound.png"];
-        [self addChild:ejector z:2];
-        // int width = [ejector boundingBox].size.width;
-        ejector.anchorPoint = ccp(0, 0);
-        ejector.position = ccp(70, 10); */
+        // Set off particles
+        particles = [CCParticleSystemQuad particleWithFile:@"ParticleTest.plist"];
+        [self addChild:particles z:22];
+        particles.scale = .6;
+        particles.position = ccp(145,100);
         
-        // Setup Floor
+        /* // Setup Floor
         floorSprite = [[[Floor alloc] initWithGameLayer:self] autorelease];
         [self addChild:[floorSprite ccNode] z:20];
-        // [floorSprite setPhysicsPosition:b2Vec2(0,10)];
+        // [floorSprite setPhysicsPosition:b2Vec2(0,10)]; */
         
         // Setup Ball
         ball = [[[Ball alloc] initWithGameLayer:self] autorelease];
-        [self addChild:[ball ccNode] z:10000];
-        [ball setPhysicsPosition:b2Vec2FromCC(155,600)];
-        
-        // Setup Rock
-        rockSprite = [[[Rock alloc] initWithGameLayer:self] autorelease];
-        [self addChild:[rockSprite ccNode] z:2];
-        [rockSprite setPhysicsPosition:b2Vec2FromCC(0, 5)];
+        [self addChild:[ball ccNode] z:20];
+        [ball setPhysicsPosition:b2Vec2FromCC(137,120)];
+        [ball setActive:NO];
+        [ball setVisible:NO];
+       
         
         // Tell app to check update function
         [self scheduleUpdate];
@@ -74,6 +70,8 @@
         // Enable screen touches
         // self.isTouchEnabled = YES;
         [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+        
+        runOnce = false;
 
         
     }
@@ -82,12 +80,25 @@
 
 -(void) update: (ccTime) dt
 {
+    curTime += dt;
+    
+    if (curTime> 5.0f && runOnce == false) {
+        
+        runOnce = true;
+        if (particles != NULL) {
+            [self removeChild:particles cleanup:YES];
+        }
+        [ball setVisible:YES];
+        [ball setActive:YES];
+    }
+    
+    /*
     // Ball's position
     float mY = [ball physicsPosition].y * PTM_RATIO;
     if (mY < 150.0f) {
         [ball applyLinearImpulse:b2Vec2(0,[ball mass]*JUMP_IMPULSE) point:[ball worldCenter]];
     
-    }
+    }*/
     
    /* // Adjust camera
     const float ballHeight = 50.0f;
@@ -109,14 +120,19 @@
 
 // This method called whenever screen is touched
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {    
-    CGPoint touchLocation = [self convertTouchToNodeSpace:touch]; // Stores where on screen touched
-    [self selectSpriteForTouch:touchLocation];      
+    // CGPoint touchLocation = [self convertTouchToNodeSpace:touch]; // Stores where on screen touched
+    [launcher open]; // Open the arms of the launcher
+    // Ball's position
+    // float mY = [ball physicsPosition].y * PTM_RATIO;
+    [ball applyLinearImpulse:b2Vec2(0,[ball mass]*JUMP_IMPULSE) point:[ball worldCenter]];
+            
+   //  [self selectSpriteForTouch:touchLocation];
     return TRUE;    
 }
 
-- (void)selectSpriteForTouch:(CGPoint)touchLocation {
+/* - (void)selectSpriteForTouch:(CGPoint)touchLocation {
 
-        if (CGRectContainsPoint(leftPod.boundingBox , touchLocation))
+        if (CGRectContainsPoint(launcher.boun , touchLocation))
         {
             [rockSprite setPhysicsPosition:b2Vec2FromCC(0, 5)];
             
@@ -125,7 +141,7 @@
             NSLog(@"Touch seen");
             
          }
-}
+} */
 
 +(CCScene *) scene
 {

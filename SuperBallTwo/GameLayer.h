@@ -15,6 +15,7 @@
 
 @class Ball;
 @class Rock;
+@class Launcher;
 
 @interface GameLayer : CCLayer
 {
@@ -26,10 +27,18 @@
     Ball                *ball;
     Floor               *floorSprite;
     Rock                *rockSprite;
+    Launcher            *launcher;
+    CCSprite            *bridge;
+    bool                runOnce;
+    
+    float               curTime;
+    
+    CCParticleSystemQuad    *particles;
+    
     // CCSpriteBatchNode   *objectLayer;           // weak reference
 }
 
-// returns a CCScene that contains the HelloWorldLayer as the only child
+// returns a CCScene that contains the GameLayer as the only child
 +(CCScene *) scene;
 
 @end

@@ -1,8 +1,8 @@
 //
-//  Rock.h
+//  Ball.h
 //  SuperBallTwo
 //
-//  Created by Darrell Payne on 5/30/12.
+//  Created by Darrell Payne on 5/18/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
@@ -12,11 +12,12 @@
 #import "cocos2d.h"
 #import "GB2Sprite.h"
 
+
 @class GameLayer;
 
-@interface Rock : GB2Sprite
+@interface Ball : GB2Sprite
 {
-    GameLayer *gameLayer; // weak reference
+        GameLayer *gameLayer; // weak reference
 }
 
 -(id) initWithGameLayer:(GameLayer*)gl;
