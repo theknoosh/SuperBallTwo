@@ -21,17 +21,19 @@
 {
     CCSprite            *background;            // weak reference
     // CCSprite            *floorBackground;       // weak reference
-    CCSprite            *leftPod;
-    CCSprite            *rightPod;
-    CCSprite            *ejector;
     Ball                *ball;
-    Floor               *floorSprite;
     Rock                *rockSprite;
     Launcher            *launcher;
     CCSprite            *bridge;
+    CCSprite            *numbers[3];
     bool                runOnce;
+    bool                doCountDown;
+    int                 numberOpacity;
+    int                 currCountdown;
+    int                 currNumber;
     
     float               curTime;
+    int                 modeLevel;
     
     CCParticleSystemQuad    *particles;
     

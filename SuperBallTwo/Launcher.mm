@@ -9,7 +9,7 @@
 #import "Launcher.h"
 #import "GameLayer.h"
 
-#define ANIM_SPEED 0.3f
+#define ANIM_SPEED 1.0f
 
 @implementation Launcher
 
@@ -20,31 +20,45 @@
     
     if(self)
     {
+        [super updateCCFromPhysics];
         // [self setFixedRotation:true];
         
         [self setBullet:YES];
         
         gameLayer = gl;
     }
+    openLauncher = false;
     return self;
 }
 
--(void)open
+-(void)setToOpen{
+    openLauncher = true;
+}
+
+-(void) updateCCFromPhysics
 {
-    NSString *frameName;
-    int animPhase = 1;
-    while (animPhase < 5) {
-        
-        animDelay -= 1.0f/60.0f;
-        if (animDelay < 0.0f) {
-            animDelay = ANIM_SPEED;
-            frameName = [NSString stringWithFormat:@"Launcher0%d.png", animPhase];
-            ++animPhase;
-            [self setDisplayFrameNamed:frameName];
+    NSString    *frameName;
+    
+    animDelay -= 1.0f/60.0f;
+    if(animDelay <= 0)
+    {
+        animDelay = ANIM_SPEED;
+        animPhase++;
+        if(animPhase > 4)
+        {
+            animPhase = 4;
         }
-        
-       
     }
+    if(openLauncher)
+    {
+        frameName = [NSString stringWithFormat:@"Launcher0%d.png", animPhase];
+    }
+    else
+    {
+        frameName = [NSString stringWithFormat:@"Launcher01.png"];
+    }
+    
+    [self setDisplayFrameNamed:frameName];
         
 }
 

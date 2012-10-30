@@ -13,12 +13,14 @@
 @interface Launcher : GB2Sprite
 {
     GameLayer *gameLayer; // weak reference
-    ccTime animDelay; // control speed of animation
+    ccTime  animDelay; // control speed of animation
+    int     animPhase;        // the current animation phase
+    bool    openLauncher;
     
 }
 
 -(id) initWithGameLayer:(GameLayer*)gl;
--(void) open;
+-(void)setToOpen;
 
 
 @end
