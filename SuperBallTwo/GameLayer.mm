@@ -6,7 +6,8 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#define JUMP_IMPULSE 12.5f
+// #define JUMP_IMPULSE 12.5f
+#define JUMP_IMPULSE 11.0f
 #define WIDTH 320
 #define HEIGHT 480
 
@@ -29,6 +30,8 @@
         // Load Box2d Shapes
         [[GB2ShapeCache sharedShapeCache] addShapesWithFile:@"shapes.plist"];
         
+        world = [[GB2Engine sharedInstance]world];
+        
         // Setup game background layer
         background = [CCSprite spriteWithSpriteFrameName:@"Background.png"];
         [self addChild:background z:0];
@@ -44,6 +47,12 @@
         bridge = [CCSprite spriteWithSpriteFrameName:@"Bridge.png"];
         [self addChild:bridge];
         bridge.position = ccp(160,250);
+        
+        // Setup for emitter
+        emmitterDevice = [CCSprite spriteWithSpriteFrameName:@"newEmitter01.png"];
+        [self addChild:emmitterDevice z:24];
+        emmitterDevice.position = ccp(160,400);
+        
         
         //Setup for numbers
         numbers[0] = [CCSprite spriteWithSpriteFrameName:@"NumberThree.png"];
@@ -67,10 +76,10 @@
         particles.scale = .6;
         particles.position = ccp(160,100);
         
-        /* // Setup Floor
-        floorSprite = [[[Floor alloc] initWithGameLayer:self] autorelease];
-        [self addChild:[floorSprite ccNode] z:20];
-        // [floorSprite setPhysicsPosition:b2Vec2(0,10)]; */
+        //particles from pods
+        podParticles = [CCParticleSystemQuad particleWithFile:@"ParticleEmitter.plist"];
+        podParticles.scale = .75;
+        // podParticles.position = ccp(160,375); // Not necessary
         
         // Setup Ball
         ball = [[[Ball alloc] initWithGameLayer:self] autorelease];
@@ -149,7 +158,8 @@
     
     }*/
     
-   // Adjust camera
+    
+    // Adjust camera
     float mY = [ball physicsPosition].y * PTM_RATIO;
     const float ballHeight = 50.0f;
     const float screenHeight = 480.0f;
@@ -159,22 +169,53 @@
         cY = 0;
     }
     
-    if (cY > 300.0f)
+    // Lock the bridge into position and start emitter
+    if (cY > 300.0f && modeLevel == 0)
     {
         cY = 300.0f;
         modeLevel = 1;
+        [self addChild:podParticles z:22];
     }
     
     if (cY < 300.0f && modeLevel == 1) {
         cY = 300.0f;
     }
     
-    // Do some parallax scrolling    
+    
+    // Do some parallax scrolling
     [launcher setPhysicsPosition:b2Vec2FromCC(60, -cY)];
     [bridge setPosition:ccp(160, 250-cY)];
+    [emmitterDevice setPosition:ccp(160,400-cY)];
+    [podParticles setPosition:ccp(160,415-cY)];
     
     [background setPosition:ccp(0,-cY*0.6)];      // move main background even slower
-
+    
+   
+    // Attempt to stop the ball at a point above the ejector
+    
+    float base = 100.0f;
+    float targetHeight = 110.0f;
+    float distanceAboveGround = mY - base;
+    b2Vec2 ballVel = [ball linearVelocity];
+    float   springConstant = 0.25f;
+    
+    //dont do anything if too far above ground
+    if ( distanceAboveGround < targetHeight && modeLevel == 1) {
+        
+        //replace distanceAboveGround with the 'look ahead' distance
+        //this will look ahead 0.25 seconds - longer gives more 'damping'
+        // Higher numbers reduce 'bounce' of ball
+        distanceAboveGround += 2.5f * ballVel.y;
+        
+        float distanceAwayFromTargetHeight = targetHeight - distanceAboveGround;
+        [ball applyForce:b2Vec2(0,springConstant * distanceAwayFromTargetHeight) point:[ball worldCenter]];
+        
+        /* m_hovercarBody->ApplyForce( b2Vec2(0,springConstant*distanceAwayFromTargetHeight), m_hovercarBody->GetWorldCenter() ); */
+        
+        //negate gravity
+        [ball applyForce:[ball mass] * -world->GetGravity() point:[ball worldCenter]];
+        /* m_hovercarBody->ApplyForce( m_hovercarBody->GetMass() * -m_world->GetGravity(), m_hovercarBody->GetWorldCenter() ); */
+    }
 }
 
 // This method called whenever screen is touched
