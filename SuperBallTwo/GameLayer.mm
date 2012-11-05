@@ -16,6 +16,7 @@
 #import "GB2Sprite.h"
 #import "Ball.h"
 #import "Launcher.h"
+#import "Piston.h"
 
 @implementation GameLayer
 
@@ -38,10 +39,19 @@
         background.anchorPoint = ccp(0,0);
         background.position = ccp(0,0);
         
-        // Initial Test for launcher
+        // Load physics object Launcher
         launcher = [[[Launcher alloc] initWithGameLayer:self] autorelease];
         [self addChild:[launcher ccNode] z:25];
         [launcher setPhysicsPosition:b2Vec2FromCC(60, 0)];
+        
+        pistonAnimation = [[[Piston alloc] initWithGameLayer:self] autorelease];
+        [self addChild:[pistonAnimation ccNode] z:25];
+        [pistonAnimation setPhysicsPosition:b2Vec2FromCC(0, 700)];
+        [pistonAnimation setActive:NO];
+        
+        rightPiston = [[[StaticObject alloc]initWithGameLayer:self andObjName:@"PistonRight" andSpriteName:@"PistonRight.png"]autorelease];
+        [self addChild:[rightPiston ccNode] z:25];
+        [rightPiston setPhysicsPosition:b2Vec2FromCC(187, 700)];
         
         // Setup for the bridge
         bridge = [CCSprite spriteWithSpriteFrameName:@"Bridge.png"];
@@ -52,7 +62,6 @@
         emmitterDevice = [CCSprite spriteWithSpriteFrameName:@"newEmitter01.png"];
         [self addChild:emmitterDevice z:24];
         emmitterDevice.position = ccp(160,400);
-        
         
         //Setup for numbers
         numbers[0] = [CCSprite spriteWithSpriteFrameName:@"NumberThree.png"];
@@ -92,7 +101,6 @@
         [self scheduleUpdate];
         
         // Enable screen touches
-        // self.isTouchEnabled = YES;
         [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
         
         runOnce = false;
@@ -125,12 +133,12 @@
     if (doCountDown && ball.active == YES) {
         ++currCountdown;
         numbers[currNumber].scale += 0.001f;
-        if (currCountdown<64) {
+        if (currCountdown<32) {
             numberOpacity += 4;
             if (numberOpacity>255) {
                 numberOpacity = 255;
             }
-        }else if (currCountdown>80){
+        }else if (currCountdown>40){
             numberOpacity -= 4;
             if (numberOpacity<0) {
                 numberOpacity = 0;
@@ -147,16 +155,6 @@
         }
         numbers[currNumber].opacity = numberOpacity;
     }
-    
-    
-    
-    /*
-    // Ball's position
-    float mY = [ball physicsPosition].y * PTM_RATIO;
-    if (mY < 150.0f) {
-        [ball applyLinearImpulse:b2Vec2(0,[ball mass]*JUMP_IMPULSE) point:[ball worldCenter]];
-    
-    }*/
     
     
     // Adjust camera
@@ -179,7 +177,7 @@
     
     if (cY < 300.0f && modeLevel == 1) {
         cY = 300.0f;
-    }
+     }
     
     
     // Do some parallax scrolling
@@ -188,9 +186,14 @@
     [emmitterDevice setPosition:ccp(160,400-cY)];
     [podParticles setPosition:ccp(160,415-cY)];
     
+    [pistonAnimation setPhysicsPosition:b2Vec2FromCC(0, 600-cY)];
+    [pistonAnimation updateCCFromPhysics];
+    
+    [rightPiston setPhysicsPosition:b2Vec2FromCC(227, 650-cY)];
+    
     [background setPosition:ccp(0,-cY*0.6)];      // move main background even slower
     
-   
+    
     // Attempt to stop the ball at a point above the ejector
     
     float base = 100.0f;
@@ -210,39 +213,51 @@
         float distanceAwayFromTargetHeight = targetHeight - distanceAboveGround;
         [ball applyForce:b2Vec2(0,springConstant * distanceAwayFromTargetHeight) point:[ball worldCenter]];
         
-        /* m_hovercarBody->ApplyForce( b2Vec2(0,springConstant*distanceAwayFromTargetHeight), m_hovercarBody->GetWorldCenter() ); */
-        
         //negate gravity
         [ball applyForce:[ball mass] * -world->GetGravity() point:[ball worldCenter]];
-        /* m_hovercarBody->ApplyForce( m_hovercarBody->GetMass() * -m_world->GetGravity(), m_hovercarBody->GetWorldCenter() ); */
+ 
     }
 }
 
 // This method called whenever screen is touched
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {    
-        // CGPoint touchLocation = [self convertTouchToNodeSpace:touch]; // Stores where on screen touched
-          // Ball's position
-    // float mY = [ball physicsPosition].y * PTM_RATIO;
-    [launcher setToOpen];
+
+    // [launcher setToOpen];
+    CGPoint touchLocation = [touch locationInView:[touch view]];
+    touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
+    touchLocation = [self convertToNodeSpace:touchLocation];
+    // b2Vec2 locationWorld = b2Vec2(touchLocation.x/PTM_RATIO, touchLocation.y/PTM_RATIO);
     
-    [ball applyLinearImpulse:b2Vec2(0,[ball mass]*JUMP_IMPULSE) point:[ball worldCenter]];
+    [self selectSpriteForTouch:touchLocation];
+    
+    
+   // [ball applyLinearImpulse:b2Vec2(0,[ball mass]*JUMP_IMPULSE) point:[ball worldCenter]];
+    // [piston01 setActive:YES];
+    // NSLog(@"Touch made");
             
    //  [self selectSpriteForTouch:touchLocation];
     return TRUE;    
 }
 
-/* - (void)selectSpriteForTouch:(CGPoint)touchLocation {
+- (void)selectSpriteForTouch:(CGPoint)touchLocation {
 
-        if (CGRectContainsPoint(launcher.boun , touchLocation))
+        if (CGRectContainsPoint(pistonAnimation.ccNode.boundingBoxInPixels, touchLocation))
         {
-            [rockSprite setPhysicsPosition:b2Vec2FromCC(0, 5)];
+            if (![pistonAnimation isOpen]) {
+                [pistonAnimation openPiston];
+                [pistonAnimation setActive:YES];
+            }else{
+                [pistonAnimation closePiston];
+                [pistonAnimation setActive:NO];
+            }
             
-            [rockSprite applyLinearImpulse:b2Vec2(0.2f, 0.5f)
-                                point: [rockSprite worldCenter]];
-            NSLog(@"Touch seen");
-            
-         }
-} */
+        }
+        if(CGRectContainsPoint(ball.ccNode.boundingBoxInPixels,
+                               touchLocation))
+        {
+            [ball applyLinearImpulse:b2Vec2(0,[ball mass]*JUMP_IMPULSE) point:[ball worldCenter]];
+        }
+}
 
 +(CCScene *) scene
 {

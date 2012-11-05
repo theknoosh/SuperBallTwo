@@ -16,11 +16,12 @@
 		362BF8B71562D362002734DC /* GB2Sprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 362BF8AC1562D362002734DC /* GB2Sprite.mm */; };
 		362BF8B81562D362002734DC /* GB2WorldContactListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = 362BF8AE1562D362002734DC /* GB2WorldContactListener.mm */; };
 		362BF8B91562D362002734DC /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 362BF8B01562D362002734DC /* GLES-Render.mm */; };
+		3630849B16445D3600DBA364 /* StaticObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3630849A16445D3600DBA364 /* StaticObject.mm */; };
+		36359E071645E8930038C15A /* Piston.mm in Sources */ = {isa = PBXBuildFile; fileRef = 36359E061645E8930038C15A /* Piston.mm */; };
 		3657706316406F4B00B4CB0A /* ParticleEmitter.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3657706216406F4B00B4CB0A /* ParticleEmitter.plist */; };
 		366D468315F1357F00485187 /* ParticleTest.plist in Resources */ = {isa = PBXBuildFile; fileRef = 366D468215F1357F00485187 /* ParticleTest.plist */; };
 		366D468715F14D9300485187 /* Launcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = 366D468615F14D9300485187 /* Launcher.mm */; };
 		36773B57156C0A41002B73C8 /* Ball.mm in Sources */ = {isa = PBXBuildFile; fileRef = 36773B56156C0A41002B73C8 /* Ball.mm */; };
-		36C666A2156D57E3007E3AE6 /* Floor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 36C666A1156D57E3007E3AE6 /* Floor.mm */; };
 		36C7A0E9155ACC0F0048248D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36C7A0E8155ACC0F0048248D /* QuartzCore.framework */; };
 		36C7A0EB155ACC0F0048248D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36C7A0EA155ACC0F0048248D /* OpenGLES.framework */; };
 		36C7A0ED155ACC0F0048248D /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36C7A0EC155ACC0F0048248D /* OpenAL.framework */; };
@@ -203,14 +204,16 @@
 		362BF8AF1562D362002734DC /* GLES-Render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLES-Render.h"; sourceTree = "<group>"; };
 		362BF8B01562D362002734DC /* GLES-Render.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "GLES-Render.mm"; sourceTree = "<group>"; };
 		362BF8B11562D362002734DC /* GMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMath.h; sourceTree = "<group>"; };
+		3630849916445D3600DBA364 /* StaticObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticObject.h; sourceTree = "<group>"; };
+		3630849A16445D3600DBA364 /* StaticObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StaticObject.mm; sourceTree = "<group>"; };
+		36359E051645E8930038C15A /* Piston.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Piston.h; sourceTree = "<group>"; };
+		36359E061645E8930038C15A /* Piston.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Piston.mm; sourceTree = "<group>"; };
 		3657706216406F4B00B4CB0A /* ParticleEmitter.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = ParticleEmitter.plist; path = assets/Particles/ParticleEmitter.plist; sourceTree = "<group>"; };
 		366D468215F1357F00485187 /* ParticleTest.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ParticleTest.plist; sourceTree = "<group>"; };
 		366D468515F14D9300485187 /* Launcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Launcher.h; sourceTree = "<group>"; };
 		366D468615F14D9300485187 /* Launcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Launcher.mm; sourceTree = "<group>"; };
 		36773B55156C0A41002B73C8 /* Ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ball.h; sourceTree = "<group>"; };
 		36773B56156C0A41002B73C8 /* Ball.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Ball.mm; sourceTree = "<group>"; };
-		36C666A0156D57E3007E3AE6 /* Floor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Floor.h; sourceTree = "<group>"; };
-		36C666A1156D57E3007E3AE6 /* Floor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Floor.mm; sourceTree = "<group>"; };
 		36C7A0E4155ACC0F0048248D /* SuperBallTwo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperBallTwo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36C7A0E8155ACC0F0048248D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		36C7A0EA155ACC0F0048248D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -610,19 +613,21 @@
 		36C7A0F8155ACC0F0048248D /* SuperBallTwo */ = {
 			isa = PBXGroup;
 			children = (
-				366D468515F14D9300485187 /* Launcher.h */,
-				366D468615F14D9300485187 /* Launcher.mm */,
 				362BF89F1562D362002734DC /* GBox2D */,
 				36C7A2BD155ACC200048248D /* AppDelegate.h */,
 				36C7A2BE155ACC200048248D /* AppDelegate.mm */,
-				36C666A0156D57E3007E3AE6 /* Floor.h */,
-				36C666A1156D57E3007E3AE6 /* Floor.mm */,
+				366D468515F14D9300485187 /* Launcher.h */,
+				366D468615F14D9300485187 /* Launcher.mm */,
 				36773B55156C0A41002B73C8 /* Ball.h */,
 				36773B56156C0A41002B73C8 /* Ball.mm */,
 				36C7A2C0155ACC200048248D /* RootViewController.h */,
 				36C7A2C1155ACC200048248D /* RootViewController.m */,
+				3630849916445D3600DBA364 /* StaticObject.h */,
+				3630849A16445D3600DBA364 /* StaticObject.mm */,
 				36E950BE1561AEDF00D3800F /* GameLayer.h */,
 				36E950BF1561AEDF00D3800F /* GameLayer.mm */,
+				36359E051645E8930038C15A /* Piston.h */,
+				36359E061645E8930038C15A /* Piston.mm */,
 				36C7A2C9155ACC200048248D /* GameConfig.h */,
 				36C7A0F9155ACC0F0048248D /* Resources */,
 				36C7A10D155ACC0F0048248D /* libs */,
@@ -1325,8 +1330,9 @@
 				362BF8B81562D362002734DC /* GB2WorldContactListener.mm in Sources */,
 				362BF8B91562D362002734DC /* GLES-Render.mm in Sources */,
 				36773B57156C0A41002B73C8 /* Ball.mm in Sources */,
-				36C666A2156D57E3007E3AE6 /* Floor.mm in Sources */,
 				366D468715F14D9300485187 /* Launcher.mm in Sources */,
+				3630849B16445D3600DBA364 /* StaticObject.mm in Sources */,
+				36359E071645E8930038C15A /* Piston.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
