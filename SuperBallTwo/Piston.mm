@@ -8,8 +8,9 @@
 
 #import "Piston.h"
 #import "GameLayer.h"
+#import "GB2Contact.h"
 
-#define ANIM_SPEED .2f
+#define ANIM_SPEED .05f
 
 @implementation Piston
 
@@ -70,6 +71,10 @@
   
     [self setDisplayFrameNamed:frameName];
     // [self setStaticBody:frameName position:[self physicsPosition]];
+}
+
+-(void)beginContactWithObject: (GB2Contact*)contact{
+    NSLog(@"Contact");
 }
 
 -(bool)isOpen{

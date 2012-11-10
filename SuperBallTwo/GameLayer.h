@@ -34,6 +34,7 @@
     int                 currNumber;
     
     float               curTime;
+    float               floor;
     int                 modeLevel;
     b2World             *world;
     

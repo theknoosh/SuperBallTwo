@@ -17,8 +17,11 @@
 
 @interface Ball : GB2Sprite
 {
-        GameLayer *gameLayer; // weak reference
+    GameLayer *gameLayer; // weak reference
+    
 }
+
+@property (readonly, nonatomic) bool inContact;
 
 -(id) initWithGameLayer:(GameLayer*)gl;
 

@@ -39,6 +39,14 @@
         background.anchorPoint = ccp(0,0);
         background.position = ccp(0,0);
         
+        // add walls to the left
+        GB2Node *leftWall = [[GB2Node alloc] initWithStaticBody:nil node:nil];
+        [leftWall addEdgeFrom:b2Vec2FromCC(0, 0) to:b2Vec2FromCC(0, 20000)];
+        
+        // add walls to the right
+        GB2Node *rightWall = [[GB2Node alloc] initWithStaticBody:nil node:nil];
+        [rightWall addEdgeFrom:b2Vec2FromCC(320, 0) to:b2Vec2FromCC(320, 20000)];
+        
         // Load physics object Launcher
         launcher = [[[Launcher alloc] initWithGameLayer:self] autorelease];
         [self addChild:[launcher ccNode] z:25];
@@ -189,7 +197,7 @@
     [pistonAnimation setPhysicsPosition:b2Vec2FromCC(0, 600-cY)];
     [pistonAnimation updateCCFromPhysics];
     
-    [rightPiston setPhysicsPosition:b2Vec2FromCC(227, 650-cY)];
+    [rightPiston setPhysicsPosition:b2Vec2FromCC(227, 600-cY)];
     
     [background setPosition:ccp(0,-cY*0.6)];      // move main background even slower
     

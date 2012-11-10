@@ -8,6 +8,7 @@
 
 #import "StaticObject.h"
 #import "GameLayer.h"
+#import "GB2Contact.h"
 
 @implementation StaticObject
 
@@ -17,14 +18,11 @@
                      spriteFrameName:spriteName];
     
     if(self)
-    {
-        // [self setFixedRotation:true];
-        
+    {        
         [self setBullet:YES];
         
         gameLayer = gl;
     }
     return self;
 }
-
 @end
