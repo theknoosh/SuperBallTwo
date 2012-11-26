@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#define JUMP_IMPULSE 5.0f
+#define JUMP_IMPULSE 8.0f
 
 #import "Ball.h"
 #import "GameLayer.h"
@@ -17,15 +17,14 @@
 
 -(id)initWithGameLayer:(GameLayer*)gl;
 {
-    self = [super initWithDynamicBody:@"Ball"
-                      spriteFrameName:@"Ball.png"];
+    self = [super initWithDynamicBody:@"SteamBot"
+                      spriteFrameName:@"SteamBot.png"];
     
     if(self)
     {
-        // [self setFixedRotation:true];
         
         [self setBullet:YES];
-        [self setFixedRotation:FALSE];
+        [self setFixedRotation:true];
         
         gameLayer = gl;
         _inContact = false;

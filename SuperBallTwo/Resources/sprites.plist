@@ -290,6 +290,19 @@
                 <key>sourceSize</key>
                 <string>{94,88}</string>
             </dict>
+            <key>SteamBot.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,676},{61,53}}</string>
+                <key>offset</key>
+                <string>{-1,1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{1,5},{61,53}}</string>
+                <key>sourceSize</key>
+                <string>{65,65}</string>
+            </dict>
             <key>newEmitter01.png</key>
             <dict>
                 <key>frame</key>
@@ -313,7 +326,7 @@
             <key>size</key>
             <string>{512,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:6010114de8441bf220143a0a6def4c09$</string>
+            <string>$TexturePacker:SmartUpdate:bdc3cc621b8ffd5c021e721938b077cf$</string>
             <key>textureFileName</key>
             <string>sprites.pvr.ccz</string>
         </dict>

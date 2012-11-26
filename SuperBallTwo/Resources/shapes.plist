@@ -695,6 +695,32 @@
                     </dict>
 				</array>
 			</dict>
+			<key>SteamBot</key>
+			<dict>
+				<key>anchorpoint</key>
+                <string>{ 0.5000,0.5000 }</string>
+				<key>fixtures</key>
+				<array>
+
+					<dict>
+                        <key>density</key> <real>2</real>
+                        <key>friction</key> <real>0.5</real>
+                        <key>restitution</key> <real>0.1</real>
+                        <key>filter_categoryBits</key> <integer>1</integer>
+                        <key>filter_groupIndex</key> <integer>0</integer>
+                        <key>filter_maskBits</key> <integer>65535</integer>
+                        <key>isSensor</key> <false/>
+                        <key>id</key> <string>SteamBot</string>
+                        <key>fixture_type</key> <string>CIRCLE</string>
+
+                         <key>circle</key>
+                         <dict>
+                             <key>radius</key> <real>47.170</real>
+                             <key>position</key> <string>{ -1.000,1.000 }</string>
+                         </dict>
+                    </dict>
+				</array>
+			</dict>
 		</dict>
 	</dict>
 </plist>

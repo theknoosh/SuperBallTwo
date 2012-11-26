@@ -7,7 +7,7 @@
             <key>Ball.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{736,1126},{96,98}}</string>
+                <string>{{736,1232},{96,98}}</string>
                 <key>offset</key>
                 <string>{0,-1}</string>
                 <key>rotated</key>
@@ -137,7 +137,7 @@
             <key>PistonAnimation00.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{503,1244},{167,140}}</string>
+                <string>{{487,1244},{167,140}}</string>
                 <key>offset</key>
                 <string>{-108,-4}</string>
                 <key>rotated</key>
@@ -150,7 +150,7 @@
             <key>PistonAnimation01.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{318,1235},{183,140}}</string>
+                <string>{{836,1233},{183,140}}</string>
                 <key>offset</key>
                 <string>{-100,-4}</string>
                 <key>rotated</key>
@@ -280,7 +280,7 @@
             <key>PistonRight.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{736,1233},{167,140}}</string>
+                <string>{{318,1235},{167,140}}</string>
                 <key>offset</key>
                 <string>{10,-3}</string>
                 <key>rotated</key>
@@ -289,6 +289,19 @@
                 <string>{{20,21},{167,140}}</string>
                 <key>sourceSize</key>
                 <string>{187,176}</string>
+            </dict>
+            <key>SteamBot.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{736,1126},{120,104}}</string>
+                <key>offset</key>
+                <string>{-1,1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{4,12},{120,104}}</string>
+                <key>sourceSize</key>
+                <string>{130,130}</string>
             </dict>
             <key>newEmitter01.png</key>
             <dict>
@@ -313,7 +326,7 @@
             <key>size</key>
             <string>{1024,2048}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:3f5968aeb0df2d4e67aaa4a4b60c17e2$</string>
+            <string>$TexturePacker:SmartUpdate:03184827c359d41dab5b259eae502c19$</string>
             <key>textureFileName</key>
             <string>sprites-hd.pvr.ccz</string>
         </dict>

@@ -7,7 +7,7 @@
 //
 
 // #define JUMP_IMPULSE 12.5f
-#define JUMP_IMPULSE 11.0f
+#define JUMP_IMPULSE 12.0f
 #define WIDTH 320
 #define HEIGHT 480
 
@@ -186,6 +186,15 @@
     if (cY < 300.0f && modeLevel == 1) {
         cY = 300.0f;
      }
+    
+    if(cY > 600.0f && modeLevel == 1){
+        modeLevel = 2;
+        cY = 600.0f;
+    }
+    
+    if (modeLevel == 2) {
+        cY = 600.0f;
+    }
     
     
     // Do some parallax scrolling

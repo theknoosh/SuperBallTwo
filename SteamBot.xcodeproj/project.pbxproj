@@ -214,7 +214,7 @@
 		366D468615F14D9300485187 /* Launcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Launcher.mm; sourceTree = "<group>"; };
 		36773B55156C0A41002B73C8 /* Ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ball.h; sourceTree = "<group>"; };
 		36773B56156C0A41002B73C8 /* Ball.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Ball.mm; sourceTree = "<group>"; };
-		36C7A0E4155ACC0F0048248D /* SuperBallTwo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperBallTwo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		36C7A0E4155ACC0F0048248D /* SteamBot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SteamBot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36C7A0E8155ACC0F0048248D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		36C7A0EA155ACC0F0048248D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		36C7A0EC155ACC0F0048248D /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
@@ -581,7 +581,7 @@
 		36C7A0D9155ACC0E0048248D = {
 			isa = PBXGroup;
 			children = (
-				36C7A0F8155ACC0F0048248D /* SuperBallTwo */,
+				36C7A0F8155ACC0F0048248D /* SteamBot */,
 				36C7A0E7155ACC0F0048248D /* Frameworks */,
 				36C7A0E5155ACC0F0048248D /* Products */,
 			);
@@ -590,7 +590,7 @@
 		36C7A0E5155ACC0F0048248D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				36C7A0E4155ACC0F0048248D /* SuperBallTwo.app */,
+				36C7A0E4155ACC0F0048248D /* SteamBot.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -610,7 +610,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		36C7A0F8155ACC0F0048248D /* SuperBallTwo */ = {
+		36C7A0F8155ACC0F0048248D /* SteamBot */ = {
 			isa = PBXGroup;
 			children = (
 				362BF89F1562D362002734DC /* GBox2D */,
@@ -633,6 +633,7 @@
 				36C7A10D155ACC0F0048248D /* libs */,
 				36C7A2B9155ACC200048248D /* Supporting Files */,
 			);
+			name = SteamBot;
 			path = SuperBallTwo;
 			sourceTree = "<group>";
 		};
@@ -1109,9 +1110,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		36C7A0E3155ACC0E0048248D /* SuperBallTwo */ = {
+		36C7A0E3155ACC0E0048248D /* SteamBot */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 36C7A2CE155ACC200048248D /* Build configuration list for PBXNativeTarget "SuperBallTwo" */;
+			buildConfigurationList = 36C7A2CE155ACC200048248D /* Build configuration list for PBXNativeTarget "SteamBot" */;
 			buildPhases = (
 				36C7A0E0155ACC0E0048248D /* Sources */,
 				36C7A0E1155ACC0E0048248D /* Frameworks */,
@@ -1121,9 +1122,9 @@
 			);
 			dependencies = (
 			);
-			name = SuperBallTwo;
+			name = SteamBot;
 			productName = SuperBallTwo;
-			productReference = 36C7A0E4155ACC0F0048248D /* SuperBallTwo.app */;
+			productReference = 36C7A0E4155ACC0F0048248D /* SteamBot.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1134,7 +1135,7 @@
 			attributes = {
 				LastUpgradeCheck = 0430;
 			};
-			buildConfigurationList = 36C7A0DE155ACC0E0048248D /* Build configuration list for PBXProject "SuperBallTwo" */;
+			buildConfigurationList = 36C7A0DE155ACC0E0048248D /* Build configuration list for PBXProject "SteamBot" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1146,7 +1147,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				36C7A0E3155ACC0E0048248D /* SuperBallTwo */,
+				36C7A0E3155ACC0E0048248D /* SteamBot */,
 			);
 		};
 /* End PBXProject section */
@@ -1386,6 +1387,7 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = SuperBallTwo/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "\"SuperBallTwo/libs\"";
@@ -1403,6 +1405,7 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = SuperBallTwo/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "\"SuperBallTwo/libs\"";
@@ -1414,7 +1417,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		36C7A0DE155ACC0E0048248D /* Build configuration list for PBXProject "SuperBallTwo" */ = {
+		36C7A0DE155ACC0E0048248D /* Build configuration list for PBXProject "SteamBot" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				36C7A2CC155ACC200048248D /* Debug */,
@@ -1423,7 +1426,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		36C7A2CE155ACC200048248D /* Build configuration list for PBXNativeTarget "SuperBallTwo" */ = {
+		36C7A2CE155ACC200048248D /* Build configuration list for PBXNativeTarget "SteamBot" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				36C7A2CF155ACC200048248D /* Debug */,
