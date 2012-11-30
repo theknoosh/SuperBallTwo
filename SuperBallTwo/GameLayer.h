@@ -24,17 +24,22 @@
     Launcher            *launcher;
     Piston              *pistonAnimation;
     StaticObject        *rightPiston;
-    CCSprite            *bridge;
+    StaticObject        *bridge;
     CCSprite            *numbers[3];
     CCSprite            *emmitterDevice;
+    CCSprite            *pressureBar;
+    CCSprite            *pressureBarPointer;
     bool                runOnce;
     bool                doCountDown;
+    bool                toggle;
     int                 numberOpacity;
     int                 currCountdown;
     int                 currNumber;
+    int                 shakeDelay;
     
     float               curTime;
     float               floor;
+    float               currPressure;
     int                 modeLevel;
     b2World             *world;
     

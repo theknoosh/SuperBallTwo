@@ -7,7 +7,7 @@
             <key>Ball.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{109,619},{48,48}}</string>
+                <string>{{255,718},{48,48}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -33,7 +33,7 @@
             <key>Launcher01.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{321,300},{170,131}}</string>
+                <string>{{2,248},{170,131}}</string>
                 <key>offset</key>
                 <string>{0,-31}</string>
                 <key>rotated</key>
@@ -46,7 +46,7 @@
             <key>Launcher02.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,463},{154,157}}</string>
+                <string>{{2,527},{154,157}}</string>
                 <key>offset</key>
                 <string>{0,-18}</string>
                 <key>rotated</key>
@@ -59,7 +59,7 @@
             <key>Launcher03.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,228},{160,171}}</string>
+                <string>{{315,300},{160,171}}</string>
                 <key>offset</key>
                 <string>{0,-11}</string>
                 <key>rotated</key>
@@ -85,7 +85,7 @@
             <key>NumberOne.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{161,572},{47,111}}</string>
+                <string>{{277,608},{47,111}}</string>
                 <key>offset</key>
                 <string>{0,-1}</string>
                 <key>rotated</key>
@@ -98,7 +98,7 @@
             <key>NumberThree.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,619},{55,105}}</string>
+                <string>{{400,535},{55,105}}</string>
                 <key>offset</key>
                 <string>{-1,-2}</string>
                 <key>rotated</key>
@@ -111,7 +111,7 @@
             <key>NumberTwo.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{159,621},{59,103}}</string>
+                <string>{{277,657},{59,103}}</string>
                 <key>offset</key>
                 <string>{1,-1}</string>
                 <key>rotated</key>
@@ -137,7 +137,7 @@
             <key>PistonAnimation00.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{264,652},{84,71}}</string>
+                <string>{{382,665},{84,71}}</string>
                 <key>offset</key>
                 <string>{-54,-2}</string>
                 <key>rotated</key>
@@ -150,7 +150,7 @@
             <key>PistonAnimation01.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{380,592},{92,71}}</string>
+                <string>{{161,671},{92,71}}</string>
                 <key>offset</key>
                 <string>{-50,-2}</string>
                 <key>rotated</key>
@@ -176,7 +176,7 @@
             <key>PistonAnimation02.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{274,579},{104,71}}</string>
+                <string>{{400,592},{104,71}}</string>
                 <key>offset</key>
                 <string>{-44,-2}</string>
                 <key>rotated</key>
@@ -189,7 +189,7 @@
             <key>PistonAnimation03.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{161,499},{116,71}}</string>
+                <string>{{282,535},{116,71}}</string>
                 <key>offset</key>
                 <string>{-38,-2}</string>
                 <key>rotated</key>
@@ -202,7 +202,7 @@
             <key>PistonAnimation04.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{175,374},{126,71}}</string>
+                <string>{{172,387},{126,71}}</string>
                 <key>offset</key>
                 <string>{-33,-2}</string>
                 <key>rotated</key>
@@ -215,7 +215,7 @@
             <key>PistonAnimation05.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{175,301},{136,71}}</string>
+                <string>{{174,314},{136,71}}</string>
                 <key>offset</key>
                 <string>{-28,-2}</string>
                 <key>rotated</key>
@@ -228,7 +228,7 @@
             <key>PistonAnimation06.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{175,228},{144,71}}</string>
+                <string>{{164,460},{144,71}}</string>
                 <key>offset</key>
                 <string>{-24,-2}</string>
                 <key>rotated</key>
@@ -241,7 +241,7 @@
             <key>PistonAnimation07.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{279,506},{152,71}}</string>
+                <string>{{310,462},{152,71}}</string>
                 <key>offset</key>
                 <string>{-20,-2}</string>
                 <key>rotated</key>
@@ -254,7 +254,7 @@
             <key>PistonAnimation08.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{303,433},{160,71}}</string>
+                <string>{{2,454},{160,71}}</string>
                 <key>offset</key>
                 <string>{-16,-2}</string>
                 <key>rotated</key>
@@ -267,7 +267,7 @@
             <key>PistonAnimation09.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,390},{168,71}}</string>
+                <string>{{2,381},{168,71}}</string>
                 <key>offset</key>
                 <string>{-12,-2}</string>
                 <key>rotated</key>
@@ -280,7 +280,7 @@
             <key>PistonRight.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{433,506},{84,72}}</string>
+                <string>{{241,228},{84,72}}</string>
                 <key>offset</key>
                 <string>{5,-1}</string>
                 <key>rotated</key>
@@ -290,14 +290,40 @@
                 <key>sourceSize</key>
                 <string>{94,88}</string>
             </dict>
+            <key>PressureBar.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,228},{237,18}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{237,18}}</string>
+                <key>sourceSize</key>
+                <string>{237,18}</string>
+            </dict>
+            <key>PressureBarPointer.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{464,462},{29,24}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{29,24}}</string>
+                <key>sourceSize</key>
+                <string>{29,24}</string>
+            </dict>
             <key>SteamBot.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,676},{61,53}}</string>
+                <string>{{174,248},{61,53}}</string>
                 <key>offset</key>
                 <string>{-1,1}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{1,5},{61,53}}</string>
                 <key>sourceSize</key>
@@ -306,7 +332,7 @@
             <key>newEmitter01.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{172,447},{119,50}}</string>
+                <string>{{161,533},{119,50}}</string>
                 <key>offset</key>
                 <string>{0,1}</string>
                 <key>rotated</key>
@@ -315,6 +341,19 @@
                 <string>{{0,0},{119,50}}</string>
                 <key>sourceSize</key>
                 <string>{119,52}</string>
+            </dict>
+            <key>pressureGauge.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{161,585},{84,114}}</string>
+                <key>offset</key>
+                <string>{0,1}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{8,5},{84,114}}</string>
+                <key>sourceSize</key>
+                <string>{100,126}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -326,7 +365,7 @@
             <key>size</key>
             <string>{512,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:bdc3cc621b8ffd5c021e721938b077cf$</string>
+            <string>$TexturePacker:SmartUpdate:05741cd78c2bed620f4842e9ec5d3230$</string>
             <key>textureFileName</key>
             <string>sprites.pvr.ccz</string>
         </dict>

@@ -10,6 +10,9 @@
 #define JUMP_IMPULSE 12.0f
 #define WIDTH 320
 #define HEIGHT 480
+#define POINTERX 45
+#define POINTERX_MAX 275
+#define SHAKE 2
 
 #import "GameLayer.h"
 #import "GB2DebugDrawLayer.h"
@@ -52,24 +55,33 @@
         [self addChild:[launcher ccNode] z:25];
         [launcher setPhysicsPosition:b2Vec2FromCC(60, 0)];
         
-        pistonAnimation = [[[Piston alloc] initWithGameLayer:self] autorelease];
+        /* pistonAnimation = [[[Piston alloc] initWithGameLayer:self] autorelease];
         [self addChild:[pistonAnimation ccNode] z:25];
         [pistonAnimation setPhysicsPosition:b2Vec2FromCC(0, 700)];
         [pistonAnimation setActive:NO];
         
         rightPiston = [[[StaticObject alloc]initWithGameLayer:self andObjName:@"PistonRight" andSpriteName:@"PistonRight.png"]autorelease];
         [self addChild:[rightPiston ccNode] z:25];
-        [rightPiston setPhysicsPosition:b2Vec2FromCC(187, 700)];
+        [rightPiston setPhysicsPosition:b2Vec2FromCC(187, 700)]; */
         
         // Setup for the bridge
-        bridge = [CCSprite spriteWithSpriteFrameName:@"Bridge.png"];
-        [self addChild:bridge];
-        bridge.position = ccp(160,250);
-        
+        bridge = [[StaticObject alloc]initWithGameLayer:self andObjName:@"Bridge"andSpriteName:@"Bridge.png"];
+        [self addChild:[bridge ccNode] z:25];
+        [bridge setPhysicsPosition:b2Vec2FromCC(160, 250)];
+        [bridge setActive:NO];
+       
         // Setup for emitter
         emmitterDevice = [CCSprite spriteWithSpriteFrameName:@"newEmitter01.png"];
         [self addChild:emmitterDevice z:24];
         emmitterDevice.position = ccp(160,400);
+        
+        pressureBar = [CCSprite spriteWithSpriteFrameName:@"PressureBar.png"];
+        [self addChild:pressureBar z:200];
+        pressureBar.position = ccp(160,460);
+        
+        pressureBarPointer = [CCSprite spriteWithSpriteFrameName:@"PressureBarPointer.png"];
+        [self addChild:pressureBarPointer z:205];
+        pressureBarPointer.position = ccp(POINTERX, 470);
         
         //Setup for numbers
         numbers[0] = [CCSprite spriteWithSpriteFrameName:@"NumberThree.png"];
@@ -115,7 +127,10 @@
         doCountDown = true;
         currNumber = 0; // Start countdown with numberThree;
         
-        modeLevel = 0; // current level
+        modeLevel = 0; // initial level
+        currPressure = 0.0f; // initial pressure
+        toggle = true; // Initial toggle
+        shakeDelay = 0;
         
      }
     return self;
@@ -139,6 +154,7 @@
     // Do the countdown here
     
     if (doCountDown && ball.active == YES) {
+        [launcher setToOpen];
         ++currCountdown;
         numbers[currNumber].scale += 0.001f;
         if (currCountdown<32) {
@@ -155,7 +171,6 @@
                 if (currNumber > 2) {
                     doCountDown = false;
                     currNumber = 2;
-                    [launcher setToOpen];
                     [ball applyLinearImpulse:b2Vec2(0,[ball mass]*JUMP_IMPULSE) point:[ball worldCenter]];
 
                 }
@@ -165,11 +180,12 @@
     }
     
     
-    // Adjust camera
+    // Camera follows ball
     float mY = [ball physicsPosition].y * PTM_RATIO;
     const float ballHeight = 50.0f;
     const float screenHeight = 480.0f;
-    float cY = mY - ballHeight - screenHeight/2.0f; 
+    // float cY = mY - ballHeight - screenHeight/2.0f;
+    float cY = mY -ballHeight - screenHeight/2;
     if(cY < 0)
     {
         cY = 0;
@@ -178,40 +194,40 @@
     // Lock the bridge into position and start emitter
     if (cY > 300.0f && modeLevel == 0)
     {
-        cY = 300.0f;
         modeLevel = 1;
         [self addChild:podParticles z:22];
+        // [bridge setActive:YES];
     }
     
     if (cY < 300.0f && modeLevel == 1) {
         cY = 300.0f;
      }
     
-    if(cY > 600.0f && modeLevel == 1){
+    /* if(cY > 600.0f && modeLevel == 1){
         modeLevel = 2;
         cY = 600.0f;
     }
     
     if (modeLevel == 2) {
         cY = 600.0f;
-    }
-    
+    } */
     
     // Do some parallax scrolling
     [launcher setPhysicsPosition:b2Vec2FromCC(60, -cY)];
-    [bridge setPosition:ccp(160, 250-cY)];
+    // [bridge setPosition:ccp(160, 250-cY)];
+    [bridge setPhysicsPosition:b2Vec2FromCC(160, 250-cY)];
     [emmitterDevice setPosition:ccp(160,400-cY)];
     [podParticles setPosition:ccp(160,415-cY)];
     
-    [pistonAnimation setPhysicsPosition:b2Vec2FromCC(0, 600-cY)];
+    /* [pistonAnimation setPhysicsPosition:b2Vec2FromCC(0, 600-cY)];
     [pistonAnimation updateCCFromPhysics];
     
-    [rightPiston setPhysicsPosition:b2Vec2FromCC(227, 600-cY)];
+    [rightPiston setPhysicsPosition:b2Vec2FromCC(227, 600-cY)]; */
     
     [background setPosition:ccp(0,-cY*0.6)];      // move main background even slower
     
     
-    // Attempt to stop the ball at a point above the ejector
+    // Ball bounces to a stop above the particle emitter
     
     float base = 100.0f;
     float targetHeight = 110.0f;
@@ -219,8 +235,25 @@
     b2Vec2 ballVel = [ball linearVelocity];
     float   springConstant = 0.25f;
     
-    //dont do anything if too far above ground
-    if ( distanceAboveGround < targetHeight && modeLevel == 1) {
+    // Determine whether SteamBot is directly above the emmitterDevice
+    CGPoint  leftBoundry, rightBoundry; // left and right side of corridor
+    CGPoint emitterPos = [emmitterDevice position]; // position of emmiter
+    // left and right boundrys are 1/4 the width to the left and right of center
+    leftBoundry.x = emitterPos.x - ([emmitterDevice boundingBox].size.width/4);
+    rightBoundry.x = emitterPos.x + ([emmitterDevice boundingBox].size.width/4);
+    bool isInCorridor; // Is the SteamBot in the corridor (x cood only)
+    // Where is the SteamBot
+    b2Vec2 ballPos = [ball physicsPosition];
+    CGPoint ccBallPos = ccpMult(CGPointMake(ballPos.x, ballPos.y), PTM_RATIO); // Convert to CGPoint
+    
+    if (ccBallPos.x > leftBoundry.x && ccBallPos.x < rightBoundry.x) {
+        isInCorridor = true;
+    }else isInCorridor = false;
+    
+    
+    //dont do anything if too far above ground or not in the correct level or not in the corridor
+    // All three must be true
+    if ( distanceAboveGround < targetHeight && modeLevel == 1 && isInCorridor) {
         
         //replace distanceAboveGround with the 'look ahead' distance
         //this will look ahead 0.25 seconds - longer gives more 'damping'
@@ -232,7 +265,40 @@
         
         //negate gravity
         [ball applyForce:[ball mass] * -world->GetGravity() point:[ball worldCenter]];
- 
+        
+        // Increase pressure on ball
+        currPressure += 0.2f;
+        
+        // Shake SteamBot after pressure hits
+        if(currPressure > 115)
+        {
+            if (shakeDelay > SHAKE) {
+
+                shakeDelay = 0;
+                // Get current position of steamBot and convert to CGPoints
+                b2Vec2 ballP = [ball physicsPosition];
+                CGPoint ballC = ccpMult(CGPointMake(ballP.x, ballP.y), PTM_RATIO);
+                
+                // Shake distance
+                float shakeOffset = currPressure/50;
+                
+                if(toggle)
+                {
+                    [ball setPhysicsPosition:b2Vec2FromCC(ballC.x + shakeOffset, ballC.y)];
+                }
+                else
+                {
+                     [ball setPhysicsPosition:b2Vec2FromCC(ballC.x - shakeOffset, ballC.y)];
+                }
+                toggle = !toggle;
+            } else ++shakeDelay;
+        }
+    }
+    
+    // Move pointer with pressure
+    pressureBarPointer.position = ccp(POINTERX + currPressure, 470);
+    if (pressureBarPointer.position.x > POINTERX_MAX) {
+        pressureBarPointer.position = ccp(POINTERX_MAX, 470);
     }
 }
 
@@ -246,6 +312,7 @@
     // b2Vec2 locationWorld = b2Vec2(touchLocation.x/PTM_RATIO, touchLocation.y/PTM_RATIO);
     
     [self selectSpriteForTouch:touchLocation];
+    // [bridge setActive:YES];
     
     
    // [ball applyLinearImpulse:b2Vec2(0,[ball mass]*JUMP_IMPULSE) point:[ball worldCenter]];
