@@ -20,6 +20,7 @@
 #import "Ball.h"
 #import "Launcher.h"
 #import "Piston.h"
+#import "DynamicObject.h"
 
 @implementation GameLayer
 
@@ -31,8 +32,21 @@
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"sprites.plist"];
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Background.plist"];
         
-        // Load Box2d Shapes
+         // Load Box2d Shapes
         [[GB2ShapeCache sharedShapeCache] addShapesWithFile:@"shapes.plist"];
+        
+        
+       /* // Define the gravity vector.
+		b2Vec2 gravity;
+		gravity.Set(0.0f, -10.0f);
+        
+        // Do we want to let bodies sleep?
+		// This will speed up the physics simulation
+		bool doSleep = true;
+        
+        // Construct a world object, which will hold and simulate the rigid bodies.
+		world = new b2World(gravity, doSleep); */
+        
         
         world = [[GB2Engine sharedInstance]world];
         
@@ -50,32 +64,89 @@
         GB2Node *rightWall = [[GB2Node alloc] initWithStaticBody:nil node:nil];
         [rightWall addEdgeFrom:b2Vec2FromCC(320, 0) to:b2Vec2FromCC(320, 20000)];
         
+        // add floor
+        GB2Node *theFloor = [[GB2Node alloc] initWithStaticBody:nil node:nil];
+        [theFloor addEdgeFrom:b2Vec2FromCC(0, 0) to:b2Vec2FromCC(0, 320)];
+        
         // Load physics object Launcher
         launcher = [[[Launcher alloc] initWithGameLayer:self] autorelease];
         [self addChild:[launcher ccNode] z:25];
         [launcher setPhysicsPosition:b2Vec2FromCC(60, 0)];
         
-        /* pistonAnimation = [[[Piston alloc] initWithGameLayer:self] autorelease];
-        [self addChild:[pistonAnimation ccNode] z:25];
-        [pistonAnimation setPhysicsPosition:b2Vec2FromCC(0, 700)];
-        [pistonAnimation setActive:NO];
-        
-        rightPiston = [[[StaticObject alloc]initWithGameLayer:self andObjName:@"PistonRight" andSpriteName:@"PistonRight.png"]autorelease];
-        [self addChild:[rightPiston ccNode] z:25];
-        [rightPiston setPhysicsPosition:b2Vec2FromCC(187, 700)]; */
         
         // Setup for the bridge
-        bridge = [[StaticObject alloc]initWithGameLayer:self andObjName:@"Bridge"andSpriteName:@"Bridge.png"];
+        bridge = [[StaticObject alloc]initWithGameLayer:self andObjName:@"brokenBridge"andSpriteName:@"brokenBridge.png"];
         [self addChild:[bridge ccNode] z:25];
-        [bridge setPhysicsPosition:b2Vec2FromCC(160, 250)];
+        // [bridge setPhysicsPosition:b2Vec2FromCC(160, 250)];
         [bridge setActive:NO];
-       
-        // Setup for emitter
-        emmitterDevice = [CCSprite spriteWithSpriteFrameName:@"newEmitter01.png"];
-        [self addChild:emmitterDevice z:24];
-        emmitterDevice.position = ccp(160,400);
+                
+        bigBumper = [[StaticObject alloc]initWithGameLayer:self andObjName:@"bigBumper" andSpriteName:@"bigBumper.png"];
+        [self addChild:[bigBumper ccNode]z:20];
         
+        
+        // **** Definition for the RevoluteJoint *********
+        
+        // ************ Definition for the wall ************
+        // Need two b2Bodies - this is the first one
+        
+
+        smallBumper = [CCSprite spriteWithSpriteFrameName:@"smallBumper.png"];
+        [self addChild:smallBumper z:25];
+        
+        b2BodyDef wallBodyDef;
+        wallBodyDef.type = b2_dynamicBody;
+        wallBodyDef.linearDamping = 1;
+        wallBodyDef.angularDamping = 1;
+        wallBodyDef.position.Set(75.0f/PTM_RATIO, 370.0f/PTM_RATIO);
+        // wallBodyDef.userData = smallBumper;
+        wallBody = world->CreateBody(&wallBodyDef);
+                
+        // Load fixture from shape.plist file instead of creating it here
+        [[GB2ShapeCache sharedShapeCache] addFixturesToBody:wallBody forShapeName:@"smallBumper"];
+        [smallBumper setAnchorPoint:[[GB2ShapeCache sharedShapeCache]anchorPointForShape:@"smallBumper"]];
+        
+        // ********** End Definition of Wall **************
+        
+        // ********** Definition for the emitter **********
+        // This is the 2nd of two b2Bodies
+        
+       
+        emmitterDevice = [CCSprite spriteWithSpriteFrameName:@"newEmitter.png"];
+        [self addChild:emmitterDevice z:25];
+        
+        b2BodyDef emitterDef;
+        emitterDef.type = b2_staticBody;
+        emitterDef.linearDamping = 1;
+        emitterDef.angularDamping = 1;
+        emitterDef.position.Set(0, 365.0f/PTM_RATIO);
+        emitterDef.angle = 0;
+        // emitterDef.userData = emmitterDevice;
+        baseBody = world->CreateBody(&emitterDef);
+                
+        // Load fixture for baseBody
+        [[GB2ShapeCache sharedShapeCache] addFixturesToBody:baseBody forShapeName:@"newEmitter"];
+        [emmitterDevice setAnchorPoint:[[GB2ShapeCache sharedShapeCache] anchorPointForShape:@"newEmitter"]];
+       
+        
+        // *********** End Definition of the emitter ******
+        
+        // Define the joint to fix the wall to floor of bridge
+        
+        b2RevoluteJointDef  wallJointDef;
+        wallJointDef.Initialize(wallBody, baseBody, b2Vec2(75.0/PTM_RATIO,390.0f/PTM_RATIO));
+        wallJointDef.enableMotor = true;
+        wallJointDef.enableLimit = true;
+        wallJointDef.motorSpeed = 0;
+        wallJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(1.65f);
+        wallJointDef.upperAngle = CC_DEGREES_TO_RADIANS(20);
+        wallJointDef.maxMotorTorque = 50;
+        wallJoint = (b2RevoluteJoint *)world->CreateJoint(&wallJointDef);
+        
+        // ***** END TEST *******
+
+
         pressureBar = [CCSprite spriteWithSpriteFrameName:@"PressureBar.png"];
+        
         [self addChild:pressureBar z:200];
         pressureBar.position = ccp(160,460);
         
@@ -139,7 +210,7 @@
 -(void) update: (ccTime) dt
 {
     curTime += dt;
-    
+        
     if (curTime> 5.0f && runOnce == false) {
         
         runOnce = true;
@@ -197,6 +268,7 @@
         modeLevel = 1;
         [self addChild:podParticles z:22];
         // [bridge setActive:YES];
+        wallJoint->SetMotorSpeed(1.0f);
     }
     
     if (cY < 300.0f && modeLevel == 1) {
@@ -214,18 +286,23 @@
     
     // Do some parallax scrolling
     [launcher setPhysicsPosition:b2Vec2FromCC(60, -cY)];
-    // [bridge setPosition:ccp(160, 250-cY)];
-    [bridge setPhysicsPosition:b2Vec2FromCC(160, 250-cY)];
-    [emmitterDevice setPosition:ccp(160,400-cY)];
-    [podParticles setPosition:ccp(160,415-cY)];
+    [bridge setPhysicsPosition:b2Vec2FromCC(0, 250-cY)];
+    // [emmitterDevice setPhysicsPosition:b2Vec2FromCC(50, 360-cY)];
+    [podParticles setPosition:ccp(32,381-cY)];
+    [bigBumper setPhysicsPosition:b2Vec2FromCC(75, 600-cY)];
     
-    /* [pistonAnimation setPhysicsPosition:b2Vec2FromCC(0, 600-cY)];
-    [pistonAnimation updateCCFromPhysics];
+    wallBody->SetTransform(b2Vec2FromCC(75, 355-cY),wallBody->GetAngle());
+    baseBody->SetTransform(b2Vec2FromCC(0, 350.0f-cY), baseBody->GetAngle());
     
-    [rightPiston setPhysicsPosition:b2Vec2FromCC(227, 600-cY)]; */
+    //         wallJointDef.Initialize(wallBody, baseBody, b2Vec2(75.0/PTM_RATIO,340.0f/PTM_RATIO));
     
-    [background setPosition:ccp(0,-cY*0.6)];      // move main background even slower
+    [background setPosition:ccp(0,-cY*0.6)]; // move main background slower than foreground
     
+    smallBumper.position = CGPointMake(wallBody->GetPosition().x * PTM_RATIO, wallBody->GetPosition().y * PTM_RATIO);
+    smallBumper.rotation = -1 * CC_RADIANS_TO_DEGREES(wallBody->GetAngle());
+    
+    emmitterDevice.position = CGPointMake(baseBody->GetPosition().x * PTM_RATIO, baseBody->GetPosition().y * PTM_RATIO);
+    emmitterDevice.rotation = -1 * CC_RADIANS_TO_DEGREES(baseBody->GetAngle());
     
     // Ball bounces to a stop above the particle emitter
     
@@ -237,11 +314,10 @@
     
     // Determine whether SteamBot is directly above the emmitterDevice
     CGPoint  leftBoundry, rightBoundry; // left and right side of corridor
-    CGPoint emitterPos = [emmitterDevice position]; // position of emmiter
-    // left and right boundrys are 1/4 the width to the left and right of center
-    leftBoundry.x = emitterPos.x - ([emmitterDevice boundingBox].size.width/4);
-    rightBoundry.x = emitterPos.x + ([emmitterDevice boundingBox].size.width/4);
+    leftBoundry = ccp(0, 0);
+    rightBoundry = ccp(75.0f, 0);
     bool isInCorridor; // Is the SteamBot in the corridor (x cood only)
+    
     // Where is the SteamBot
     b2Vec2 ballPos = [ball physicsPosition];
     CGPoint ccBallPos = ccpMult(CGPointMake(ballPos.x, ballPos.y), PTM_RATIO); // Convert to CGPoint
@@ -255,6 +331,7 @@
     // All three must be true
     if ( distanceAboveGround < targetHeight && modeLevel == 1 && isInCorridor) {
         
+        wallJoint->SetMotorSpeed(-1.0f);
         //replace distanceAboveGround with the 'look ahead' distance
         //this will look ahead 0.25 seconds - longer gives more 'damping'
         // Higher numbers reduce 'bounce' of ball

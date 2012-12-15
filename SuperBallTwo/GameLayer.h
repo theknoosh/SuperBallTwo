@@ -16,6 +16,7 @@
 @class Ball;
 @class Launcher;
 @class Piston;
+@class DynamicObject;
 
 @interface GameLayer : CCLayer
 {
@@ -25,10 +26,23 @@
     Piston              *pistonAnimation;
     StaticObject        *rightPiston;
     StaticObject        *bridge;
+    StaticObject        *bigBumper;
     CCSprite            *numbers[3];
-    CCSprite            *emmitterDevice;
     CCSprite            *pressureBar;
     CCSprite            *pressureBarPointer;
+    CCSprite            *smallBumper;
+    CCSprite            *emmitterDevice;
+   
+    // ****** Revolute Joint *******
+    
+    b2Body              *wallBody;
+    b2Body              *baseBody;
+    b2Fixture           *wallFixture;
+    b2Fixture           *baseFixture;
+    b2RevoluteJoint     *wallJoint;
+    
+    // ****** End Revolute Joint *********
+    
     bool                runOnce;
     bool                doCountDown;
     bool                toggle;

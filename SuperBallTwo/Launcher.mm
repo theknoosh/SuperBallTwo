@@ -15,8 +15,8 @@
 
 -(id)initWithGameLayer:(GameLayer*)gl;
 {
-    self = [super initWithStaticBody:@"Launcher01"
-                     spriteFrameName:@"Launcher01.png"];
+    self = [super initWithStaticBody:@"Launcher04"
+                     spriteFrameName:@"Launcher04.png"];
     
     if(self)
     {

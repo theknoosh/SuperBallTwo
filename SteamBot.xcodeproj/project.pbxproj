@@ -182,6 +182,7 @@
 		36EE85BC155DA1A700D23733 /* sprites-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = 36EE85B7155DA1A700D23733 /* sprites-hd.pvr.ccz */; };
 		36EE85BD155DA1A700D23733 /* sprites.plist in Resources */ = {isa = PBXBuildFile; fileRef = 36EE85B8155DA1A700D23733 /* sprites.plist */; };
 		36EE85BE155DA1A700D23733 /* sprites.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = 36EE85B9155DA1A700D23733 /* sprites.pvr.ccz */; };
+		36F98836166FC5270099DF07 /* DynamicObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 36F98835166FC5270099DF07 /* DynamicObject.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -532,6 +533,8 @@
 		36EE85B7155DA1A700D23733 /* sprites-hd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; name = "sprites-hd.pvr.ccz"; path = "Resources/sprites-hd.pvr.ccz"; sourceTree = "<group>"; };
 		36EE85B8155DA1A700D23733 /* sprites.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = sprites.plist; path = Resources/sprites.plist; sourceTree = "<group>"; };
 		36EE85B9155DA1A700D23733 /* sprites.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; name = sprites.pvr.ccz; path = Resources/sprites.pvr.ccz; sourceTree = "<group>"; };
+		36F98834166FC5270099DF07 /* DynamicObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicObject.h; sourceTree = "<group>"; };
+		36F98835166FC5270099DF07 /* DynamicObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DynamicObject.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -628,6 +631,8 @@
 				36E950BF1561AEDF00D3800F /* GameLayer.mm */,
 				36359E051645E8930038C15A /* Piston.h */,
 				36359E061645E8930038C15A /* Piston.mm */,
+				36F98834166FC5270099DF07 /* DynamicObject.h */,
+				36F98835166FC5270099DF07 /* DynamicObject.mm */,
 				36C7A2C9155ACC200048248D /* GameConfig.h */,
 				36C7A0F9155ACC0F0048248D /* Resources */,
 				36C7A10D155ACC0F0048248D /* libs */,
@@ -1334,6 +1339,7 @@
 				366D468715F14D9300485187 /* Launcher.mm in Sources */,
 				3630849B16445D3600DBA364 /* StaticObject.mm in Sources */,
 				36359E071645E8930038C15A /* Piston.mm in Sources */,
+				36F98836166FC5270099DF07 /* DynamicObject.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
