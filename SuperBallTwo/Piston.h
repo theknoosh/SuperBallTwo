@@ -16,6 +16,7 @@
     ccTime  animDelay; // control speed of animation
     int     animPhase;        // the current animation phase
     bool    setOpenPiston, setClosePiston;
+
     
 }
 

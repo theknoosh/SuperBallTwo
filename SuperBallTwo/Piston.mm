@@ -27,6 +27,7 @@
         [self setBullet:YES];
         
         gameLayer = gl;
+        
     }
     setOpenPiston = false;
     return self;
@@ -79,6 +80,12 @@
 
 -(bool)isOpen{
     return setOpenPiston;
+}
+
+-(void) dealloc
+{
+    [super dealloc];
+    
 }
 
 

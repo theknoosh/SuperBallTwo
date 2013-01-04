@@ -46,6 +46,7 @@
     bool                runOnce;
     bool                doCountDown;
     bool                toggle;
+    bool                playSoundOnce;
     int                 numberOpacity;
     int                 currCountdown;
     int                 currNumber;

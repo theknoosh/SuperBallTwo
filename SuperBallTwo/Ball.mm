@@ -12,6 +12,8 @@
 #import "GameLayer.h"
 #import "GB2Contact.h"
 
+#define ANIM_SPEED .05f
+
 
 @implementation Ball
 
@@ -28,6 +30,16 @@
         
         gameLayer = gl;
         _inContact = false;
+        animPhase = 0;
+        
+        // (arc4random() % (max-min+1)) + min
+        blinkDelay = (arc4random() % (10-1+1)) + 1;
+        blinkOpen = true;
+        
+        animDelay = ANIM_SPEED;
+        
+        botMood = @"Normal";
+        botAnim = @"Blink";
     }
     return self;
 }
@@ -56,27 +68,78 @@
     _inContact = true;
 }
 
-/* -(void) endContactWithPiston:(GB2Contact*)contact
-{
-    NSString *fixtureId = (NSString *)contact.ownFixture->GetUserData();
-    if([fixtureId isEqualToString:@"ContactLeft"])
-    {
-        numContactLeftContacts--;
+// This is needed for character animation
+
+-(void) updateCCFromPhysics {
+    
+    [super updateCCFromPhysics];
+    
+    NSString    *frameName;
+    
+    if (blinkDelay > 0) {
+        blinkDelay -= 1.0f/30.0f;
     }
-    else if([fixtureId isEqualToString:@"ContactRight"])
-    {
-        numContactRightContacts--;
-    }
-    else if([fixtureId isEqualToString:@"ContactTop"])
-    {
-        numContactTopContacts--;
-    }
-    else
-    {
-        // count others as floor contacts
-        numContactBottomContacts--;
+
+    if (blinkDelay <= 0) {
+        blinkNow = true;
     }
     
-}*/
+    if (blinkNow) {
+        
+        animDelay -= 1.0f/30.0f;
+    
+        if(animDelay <= 0)
+        {
+            animDelay = ANIM_SPEED;
+        
+            if (blinkOpen) {
+                animPhase++;
+                botHasChanged = true;
+                if(animPhase > 3)
+                {
+                    animPhase = 3;
+                    blinkOpen = false;
+                }
+            }else {
+                animPhase--;
+                botHasChanged = true;
+                if (animPhase<0) {
+                    animPhase = 0;
+                    
+                    //  Blinking sequence is finished, reset
+                    blinkNow = false;
+                    blinkOpen = true;       
+                    blinkDelay = (arc4random() % (10-1+1)) + 1;
+                }
+            }
+        } 
+    }
+    
+    if (botHasChanged) {
+        
+        frameName = [NSString stringWithFormat:@"SteamBot%@%@0%d.png",botMood,
+                 botAnim,animPhase];
+
+        [self setDisplayFrameNamed:frameName];
+        botHasChanged = false;
+    }
+    
+}
+
+-(void)setMood:(int)Mood{
+    switch (Mood) {
+        case 0:
+            botMood = @"Normal";
+            break;
+        case 1:
+            botMood = @"Angry";
+            break;
+            
+        default:
+            botMood = @"Normal";
+            break;
+    }
+}
+
 
 @end

@@ -21,13 +21,15 @@
 #import "Launcher.h"
 #import "Piston.h"
 #import "DynamicObject.h"
-
+#import "SimpleAudioEngine.h"
 @implementation GameLayer
 
 -(id) init
 {
     if( (self=[super init]))
     {
+        
+        [SimpleAudioEngine sharedEngine];
         // Load all Sprites
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"sprites.plist"];
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Background.plist"];
@@ -179,7 +181,6 @@
         //particles from pods
         podParticles = [CCParticleSystemQuad particleWithFile:@"ParticleEmitter.plist"];
         podParticles.scale = .75;
-        // podParticles.position = ccp(160,375); // Not necessary
         
         // Setup Ball
         ball = [[[Ball alloc] initWithGameLayer:self] autorelease];
@@ -202,6 +203,7 @@
         currPressure = 0.0f; // initial pressure
         toggle = true; // Initial toggle
         shakeDelay = 0;
+        playSoundOnce = true;
         
      }
     return self;
@@ -210,6 +212,8 @@
 -(void) update: (ccTime) dt
 {
     curTime += dt;
+    
+    // [ball updateCCFromPhysics];
         
     if (curTime> 5.0f && runOnce == false) {
         
@@ -267,6 +271,8 @@
     {
         modeLevel = 1;
         [self addChild:podParticles z:22];
+        [[SimpleAudioEngine sharedEngine] playEffect:@"FlameOut.caf" pitch:1.0 pan:-1.0 gain:1.0];
+
         // [bridge setActive:YES];
         wallJoint->SetMotorSpeed(1.0f);
     }
@@ -287,14 +293,11 @@
     // Do some parallax scrolling
     [launcher setPhysicsPosition:b2Vec2FromCC(60, -cY)];
     [bridge setPhysicsPosition:b2Vec2FromCC(0, 250-cY)];
-    // [emmitterDevice setPhysicsPosition:b2Vec2FromCC(50, 360-cY)];
     [podParticles setPosition:ccp(32,381-cY)];
     [bigBumper setPhysicsPosition:b2Vec2FromCC(75, 600-cY)];
     
     wallBody->SetTransform(b2Vec2FromCC(75, 355-cY),wallBody->GetAngle());
     baseBody->SetTransform(b2Vec2FromCC(0, 350.0f-cY), baseBody->GetAngle());
-    
-    //         wallJointDef.Initialize(wallBody, baseBody, b2Vec2(75.0/PTM_RATIO,340.0f/PTM_RATIO));
     
     [background setPosition:ccp(0,-cY*0.6)]; // move main background slower than foreground
     
@@ -349,7 +352,15 @@
         // Shake SteamBot after pressure hits
         if(currPressure > 115)
         {
-            if (shakeDelay > SHAKE) {
+
+            [ball setMood:1];
+            if (playSoundOnce) {
+                [[SimpleAudioEngine sharedEngine] playEffect:@"SteamBuildup.caf" pitch:1.0 pan:-1.0 gain:1.0];
+                
+                playSoundOnce = false;
+            }
+            
+             if (shakeDelay > SHAKE) {
 
                 shakeDelay = 0;
                 // Get current position of steamBot and convert to CGPoints

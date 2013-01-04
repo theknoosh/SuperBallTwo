@@ -4,19 +4,6 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>Ball.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{253,1246},{96,98}}</string>
-                <key>offset</key>
-                <string>{0,-1}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{2,2},{96,98}}</string>
-                <key>sourceSize</key>
-                <string>{100,100}</string>
-            </dict>
             <key>Bridge.png</key>
             <dict>
                 <key>frame</key>
@@ -29,6 +16,19 @@
                 <string>{{0,0},{640,449}}</string>
                 <key>sourceSize</key>
                 <string>{640,575}</string>
+            </dict>
+            <key>Icon.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{124,1693},{114,114}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{114,114}}</string>
+                <key>sourceSize</key>
+                <string>{114,114}</string>
             </dict>
             <key>Launcher01.png</key>
             <dict>
@@ -85,11 +85,11 @@
             <key>NumberOne.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{351,1335},{92,220}}</string>
+                <string>{{2,1388},{92,220}}</string>
                 <key>offset</key>
                 <string>{1,-3}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{68,6},{92,220}}</string>
                 <key>sourceSize</key>
@@ -98,11 +98,11 @@
             <key>NumberThree.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{353,886},{110,208}}</string>
+                <string>{{2,1482},{110,208}}</string>
                 <key>offset</key>
                 <string>{-2,-4}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{56,13},{110,208}}</string>
                 <key>sourceSize</key>
@@ -137,7 +137,7 @@
             <key>PistonAnimation00.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{453,1301},{167,140}}</string>
+                <string>{{473,1159},{167,140}}</string>
                 <key>offset</key>
                 <string>{-108,-4}</string>
                 <key>rotated</key>
@@ -150,7 +150,7 @@
             <key>PistonAnimation01.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{453,1159},{183,140}}</string>
+                <string>{{273,1236},{183,140}}</string>
                 <key>offset</key>
                 <string>{-100,-4}</string>
                 <key>rotated</key>
@@ -176,11 +176,11 @@
             <key>PistonAnimation02.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,1388},{207,140}}</string>
+                <string>{{253,1378},{207,140}}</string>
                 <key>offset</key>
                 <string>{-88,-4}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,47},{207,140}}</string>
                 <key>sourceSize</key>
@@ -189,7 +189,7 @@
             <key>PistonAnimation03.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{445,1443},{231,140}}</string>
+                <string>{{458,1301},{231,140}}</string>
                 <key>offset</key>
                 <string>{-76,-4}</string>
                 <key>rotated</key>
@@ -280,7 +280,7 @@
             <key>PistonRight.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{465,1017},{167,140}}</string>
+                <string>{{473,1017},{167,140}}</string>
                 <key>offset</key>
                 <string>{10,-3}</string>
                 <key>rotated</key>
@@ -319,13 +319,130 @@
             <key>SteamBot.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{353,780},{120,104}}</string>
+                <string>{{456,1636},{120,104}}</string>
                 <key>offset</key>
                 <string>{-1,1}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
                 <string>{{4,12},{120,104}}</string>
+                <key>sourceSize</key>
+                <string>{130,130}</string>
+            </dict>
+            <key>SteamBotAngryBlink00.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{351,1122},{120,112}}</string>
+                <key>offset</key>
+                <string>{-1,-3}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{4,12},{120,112}}</string>
+                <key>sourceSize</key>
+                <string>{130,130}</string>
+            </dict>
+            <key>SteamBotAngryBlink01.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{351,1008},{120,112}}</string>
+                <key>offset</key>
+                <string>{-1,-3}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{4,12},{120,112}}</string>
+                <key>sourceSize</key>
+                <string>{130,130}</string>
+            </dict>
+            <key>SteamBotAngryBlink02.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{353,894},{120,112}}</string>
+                <key>offset</key>
+                <string>{-1,-3}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{4,12},{120,112}}</string>
+                <key>sourceSize</key>
+                <string>{130,130}</string>
+            </dict>
+            <key>SteamBotAngryBlink03.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{353,780},{120,112}}</string>
+                <key>offset</key>
+                <string>{-1,-3}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{4,12},{120,112}}</string>
+                <key>sourceSize</key>
+                <string>{130,130}</string>
+            </dict>
+            <key>SteamBotNormalBlink00.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{456,1636},{120,104}}</string>
+                <key>offset</key>
+                <string>{-1,1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{4,12},{120,104}}</string>
+                <key>sourceSize</key>
+                <string>{130,130}</string>
+            </dict>
+            <key>SteamBotNormalBlink01.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{334,1636},{120,104}}</string>
+                <key>offset</key>
+                <string>{-1,1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{4,12},{120,104}}</string>
+                <key>sourceSize</key>
+                <string>{130,130}</string>
+            </dict>
+            <key>SteamBotNormalBlink02.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,1594},{120,104}}</string>
+                <key>offset</key>
+                <string>{-1,1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{4,12},{120,104}}</string>
+                <key>sourceSize</key>
+                <string>{130,130}</string>
+            </dict>
+            <key>SteamBotNormalBlink03.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{212,1587},{120,104}}</string>
+                <key>offset</key>
+                <string>{-1,1}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{4,12},{120,104}}</string>
+                <key>sourceSize</key>
+                <string>{130,130}</string>
+            </dict>
+            <key>SteamBot_angry.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{351,1122},{120,112}}</string>
+                <key>offset</key>
+                <string>{-1,-3}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{4,12},{120,112}}</string>
                 <key>sourceSize</key>
                 <string>{130,130}</string>
             </dict>
@@ -371,11 +488,11 @@
             <key>newEmitter01.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{351,1096},{237,100}}</string>
+                <string>{{395,1534},{237,100}}</string>
                 <key>offset</key>
                 <string>{0,2}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{237,100}}</string>
                 <key>sourceSize</key>
@@ -430,7 +547,7 @@
             <key>size</key>
             <string>{1024,2048}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:0529bcaa2d7d9f4e3f9a00a05601fc53$</string>
+            <string>$TexturePacker:SmartUpdate:9400b57a710fa04ebdb98e5d642c621b$</string>
             <key>textureFileName</key>
             <string>sprites-hd.pvr.ccz</string>
         </dict>

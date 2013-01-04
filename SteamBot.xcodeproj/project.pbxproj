@@ -17,6 +17,10 @@
 		362BF8B81562D362002734DC /* GB2WorldContactListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = 362BF8AE1562D362002734DC /* GB2WorldContactListener.mm */; };
 		362BF8B91562D362002734DC /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 362BF8B01562D362002734DC /* GLES-Render.mm */; };
 		3630849B16445D3600DBA364 /* StaticObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3630849A16445D3600DBA364 /* StaticObject.mm */; };
+		3633EE311680DD3500A31630 /* SteamBuildup.caf in Resources */ = {isa = PBXBuildFile; fileRef = 3633EE2F1680DD3500A31630 /* SteamBuildup.caf */; };
+		3633EE321680DD3500A31630 /* SteamShot.caf in Resources */ = {isa = PBXBuildFile; fileRef = 3633EE301680DD3500A31630 /* SteamShot.caf */; };
+		3633EE361680E79100A31630 /* FlameOut.caf in Resources */ = {isa = PBXBuildFile; fileRef = 3633EE341680E79100A31630 /* FlameOut.caf */; };
+		3633EE371680E79100A31630 /* FlameOut02.caf in Resources */ = {isa = PBXBuildFile; fileRef = 3633EE351680E79100A31630 /* FlameOut02.caf */; };
 		36359E071645E8930038C15A /* Piston.mm in Sources */ = {isa = PBXBuildFile; fileRef = 36359E061645E8930038C15A /* Piston.mm */; };
 		3657706316406F4B00B4CB0A /* ParticleEmitter.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3657706216406F4B00B4CB0A /* ParticleEmitter.plist */; };
 		366D468315F1357F00485187 /* ParticleTest.plist in Resources */ = {isa = PBXBuildFile; fileRef = 366D468215F1357F00485187 /* ParticleTest.plist */; };
@@ -207,6 +211,10 @@
 		362BF8B11562D362002734DC /* GMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMath.h; sourceTree = "<group>"; };
 		3630849916445D3600DBA364 /* StaticObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticObject.h; sourceTree = "<group>"; };
 		3630849A16445D3600DBA364 /* StaticObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StaticObject.mm; sourceTree = "<group>"; };
+		3633EE2F1680DD3500A31630 /* SteamBuildup.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SteamBuildup.caf; sourceTree = "<group>"; };
+		3633EE301680DD3500A31630 /* SteamShot.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SteamShot.caf; sourceTree = "<group>"; };
+		3633EE341680E79100A31630 /* FlameOut.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FlameOut.caf; sourceTree = "<group>"; };
+		3633EE351680E79100A31630 /* FlameOut02.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FlameOut02.caf; sourceTree = "<group>"; };
 		36359E051645E8930038C15A /* Piston.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Piston.h; sourceTree = "<group>"; };
 		36359E061645E8930038C15A /* Piston.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Piston.mm; sourceTree = "<group>"; };
 		3657706216406F4B00B4CB0A /* ParticleEmitter.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = ParticleEmitter.plist; path = assets/Particles/ParticleEmitter.plist; sourceTree = "<group>"; };
@@ -645,6 +653,10 @@
 		36C7A0F9155ACC0F0048248D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3633EE341680E79100A31630 /* FlameOut.caf */,
+				3633EE351680E79100A31630 /* FlameOut02.caf */,
+				3633EE2F1680DD3500A31630 /* SteamBuildup.caf */,
+				3633EE301680DD3500A31630 /* SteamShot.caf */,
 				3657706216406F4B00B4CB0A /* ParticleEmitter.plist */,
 				366D468215F1357F00485187 /* ParticleTest.plist */,
 				362031ED15F12A9D00DDD576 /* LauncherExplosion.plist */,
@@ -1184,6 +1196,10 @@
 				362031EE15F12A9D00DDD576 /* LauncherExplosion.plist in Resources */,
 				366D468315F1357F00485187 /* ParticleTest.plist in Resources */,
 				3657706316406F4B00B4CB0A /* ParticleEmitter.plist in Resources */,
+				3633EE311680DD3500A31630 /* SteamBuildup.caf in Resources */,
+				3633EE321680DD3500A31630 /* SteamShot.caf in Resources */,
+				3633EE361680E79100A31630 /* FlameOut.caf in Resources */,
+				3633EE371680E79100A31630 /* FlameOut02.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
