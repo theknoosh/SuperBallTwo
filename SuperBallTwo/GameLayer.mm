@@ -12,6 +12,8 @@
 #define HEIGHT 480
 #define POINTERX 45
 #define POINTERX_MAX 275
+#define NORMAL 0
+#define ANGRY 1
 #define SHAKE 2
 
 #import "GameLayer.h"
@@ -22,6 +24,8 @@
 #import "Piston.h"
 #import "DynamicObject.h"
 #import "SimpleAudioEngine.h"
+
+
 @implementation GameLayer
 
 -(id) init
@@ -30,6 +34,7 @@
     {
         
         [SimpleAudioEngine sharedEngine];
+        
         // Load all Sprites
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"sprites.plist"];
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Background.plist"];
@@ -272,6 +277,10 @@
         modeLevel = 1;
         [self addChild:podParticles z:22];
         [[SimpleAudioEngine sharedEngine] playEffect:@"FlameOut.caf" pitch:1.0 pan:-1.0 gain:1.0];
+        /*
+        if ([ball physicsPosition].y * PTM_RATIO > screenHeight) {
+            [ball setPhysicsPosition:b2Vec2FromCC(7.0f,[ball physicsPosition].x)];
+        } */
 
         // [bridge setActive:YES];
         wallJoint->SetMotorSpeed(1.0f);
@@ -353,7 +362,8 @@
         if(currPressure > 115)
         {
 
-            [ball setMood:1];
+            [ball setMood:ANGRY];
+            
             if (playSoundOnce) {
                 [[SimpleAudioEngine sharedEngine] playEffect:@"SteamBuildup.caf" pitch:1.0 pan:-1.0 gain:1.0];
                 
