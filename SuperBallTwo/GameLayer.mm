@@ -7,7 +7,7 @@
 //
 
 // #define JUMP_IMPULSE 12.5f
-#define JUMP_IMPULSE 24.0f
+#define JUMP_IMPULSE 0.4f
 #define WIDTH 320
 #define HEIGHT 480
 #define POINTERX 45
@@ -55,6 +55,7 @@
         
         justOnce = YES;
         spinnerExists = NO;
+        pulseOn = NO;
         
         // Setup all graphics ****************************
         
@@ -98,29 +99,8 @@
         
         // Initialize NSMutableArray
         // triangleObjects = [[NSMutableArray alloc] init];
-        rightPlatforms = [[NSMutableArray alloc] init];
-        leftPlatforms = [[NSMutableArray alloc] init];
         
         float curHeight = 450.0f;
-        
-        // Array of left and right platforms (3 each)
-        for (NSUInteger x=0; x<7; x++) {
-            [rightPlatforms addObject:[[StaticObject alloc] initWithGameLayer:self andObjName:@"rightPlatform" andSpriteName:@"rightPlatform.png"]];
-            [leftPlatforms addObject:[[StaticObject alloc] initWithGameLayer:self andObjName:@"leftPlatform" andSpriteName:@"leftPlatform.png"]];
-            
-            [[leftPlatforms objectAtIndex:x] setPhysicsPosition:b2Vec2FromCC(100.0f, curHeight)];
-            [[rightPlatforms objectAtIndex:x] setPhysicsPosition:b2Vec2FromCC(250.0f, curHeight + 150.0f)];
-            curHeight += 300.0f;
-            
-            [[leftPlatforms objectAtIndex:x]setActive:NO];
-            [[rightPlatforms objectAtIndex:x]setActive:NO];
-            
-        }
-        
-        // Gothic Spinner
-        spinner = [[StaticObject alloc] initWithGameLayer:self andObjName:@"spinner" andSpriteName:@"spinner.png"];
-        [spinner setPhysicsPosition:b2Vec2FromCC(300.0f, 420.0f)];
-        [spinner setActive:NO];
         
         emmitterDevice = [CCSprite spriteWithSpriteFrameName:@"newEmitter.png"];
         [objectLayer addChild:emmitterDevice z:25];
@@ -133,22 +113,6 @@
         controlButtonArrows = [CCSprite spriteWithSpriteFrameName:@"ControlButtonArrows.png"];
         [controlLayer addChild:controlButtonArrows z:24];
         [controlButtonArrows setPosition:ccp(60, 60)];
-                
-        //Setup for numbers
-        numbers[0] = [CCSprite spriteWithSpriteFrameName:@"NumberThree.png"];
-        numbers[0].opacity = 0;
-        numbers[0].position = ccp(160,150);
-        [self addChild:numbers[0] z:255];
-        
-        numbers[1] = [CCSprite spriteWithSpriteFrameName:@"NumberTwo.png"];
-        numbers[1].opacity = 0;
-        numbers[1].position = ccp(160,150);
-        [self addChild:numbers[1] z:255];
-        
-        numbers[2] = [CCSprite spriteWithSpriteFrameName:@"NumberOne.png"];
-        numbers[2].opacity = 0;
-        numbers[2].position = ccp(160,150);
-        [self addChild:numbers[2] z:255];
         
         // Set off particles
         particles = [CCParticleSystemQuad particleWithFile:@"ParticleTest.plist"];
@@ -215,44 +179,6 @@
         [launcher setToOpen];
     }
     
-   /*
-   double y = ((double)arc4random() / ARC4RANDOM_MAX) * 1.0f;
-    // NSLog(@"Random number: %f",y-1);
-    
-    CGPoint pos = [triangle position];
-    [triangle setPosition:ccp(pos.x + (y-.5), pos.y + (y-.5))];
-    */
-    
-    /*
-    
-    // Do the countdown here
-    if (doCountDown && ball.active == YES) {
-        [launcher setToOpen];
-        ++currCountdown;
-        numbers[currNumber].scale += 0.001f;
-        if (currCountdown<32) {
-            numberOpacity += 4;
-            if (numberOpacity>255) {
-                numberOpacity = 255;
-            }
-        }else if (currCountdown>40){
-            numberOpacity -= 4;
-            if (numberOpacity<0) {
-                numberOpacity = 0;
-                currCountdown = 0;
-                currNumber += 1;
-                if (currNumber > 2) {
-                    doCountDown = false;
-                    currNumber = 2;
-                    [ball applyLinearImpulse:b2Vec2(0,[ball mass]*JUMP_IMPULSE) point:[ball worldCenter]];
-
-                }
-            }
-        }
-        numbers[currNumber].opacity = numberOpacity;
-    } */
-    
-
     // Camera follows ball
     float mY = [ball physicsPosition].y * PTM_RATIO;
     const float ballHeight = 50.0f;
@@ -268,53 +194,12 @@
     if (cY > 500.0f && modeLevel == 0)
     {
         modeLevel = 1;
-                
-        /*
-        [objectLayer addChild:[spinner ccNode] z:25];
-        [spinner setActive:YES];
-        spinnerExists = YES;
-        */
     }
     
     if (cY < 300.0f && modeLevel == 1) {
         cY = 300.0f;
      }
     static float gridPosition = 400;
-    // static NSInteger curIndex = 0;
-    
-    // This section places random triangles
-   /* if (mY > gridPosition + 100) {
-        
-        
-        if (currentSpeed < 1 && wasNotDone) {
-            
-            
-            for (NSUInteger x=0; x<7; x++) {
-                [objectLayer addChild:[[rightPlatforms objectAtIndex:x]ccNode]z:25];
-                [objectLayer addChild:[[leftPlatforms objectAtIndex:x]ccNode]z:25];
-                [[leftPlatforms objectAtIndex:x]setActive:YES];
-                [[rightPlatforms objectAtIndex:x]setActive:YES];
-            }
-            wasNotDone = NO;
-            [triangleObjects addObject:[[StaticObject alloc] initWithGameLayer:self andObjName:@"triangle" andSpriteName:@"triangle.png"]];
-            int xLoc = arc4random() % 3;
-            [[triangleObjects objectAtIndex:curIndex] setPhysicsPosition:b2Vec2FromCC(((float) xLoc * 106) + 53, gridPosition)];
-            [[triangleObjects objectAtIndex:curIndex]setActive:YES];
-            [objectLayer addChild:[[triangleObjects objectAtIndex:curIndex] ccNode]z:25];
-            curIndex++;
-            gridPosition += 106.0f;
-        }
-    } */
-    
-    /*
-    if (spinnerExists) {
-        [spinner setAngle:angle];
-        angle -= 0.01f;
-        if (angle < -6.2831f) {
-            angle = 0;
-        }
-    
-    } */
     
     [bridge setPhysicsPosition:b2Vec2FromCC(0, 250)];
     [launcher setPhysicsPosition:b2Vec2FromCC(60, 0)];
@@ -349,7 +234,6 @@
     // All three must be true
     if ( distanceAboveGround < targetHeight && isInCorridor) {
         
-        // wallJoint->SetMotorSpeed(-1.0f);
         //replace distanceAboveGround with the 'look ahead' distance
         //this will look ahead 0.25 seconds - longer gives more 'damping'
         // Higher numbers reduce 'bounce' of ball
@@ -406,36 +290,55 @@
     if (pressureBarPointer.position.x > POINTERX_MAX) {
         pressureBarPointer.position = ccp(POINTERX_MAX, 470);
     }
+    if (pulseOn) {
+        [ball applyLinearImpulse:b2Vec2(0,[ball mass]*JUMP_IMPULSE) point:[ball worldCenter]];
+    }
 }
 
 // This method called whenever screen is touched
+// Determines location of touch then calls selectSprite function
+
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {    
 
-    // [launcher setToOpen];
     CGPoint touchLocation = [touch locationInView:[touch view]];
     touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
     touchLocation = [self convertToNodeSpace:touchLocation];
-    // b2Vec2 locationWorld = b2Vec2(touchLocation.x/PTM_RATIO, touchLocation.y/PTM_RATIO);
     
     [self selectSpriteForTouch:touchLocation];
-    // [bridge setActive:YES];
-    
-    
-   // [ball applyLinearImpulse:b2Vec2(0,[ball mass]*JUMP_IMPULSE) point:[ball worldCenter]];
-    // [piston01 setActive:YES];
-    // NSLog(@"Touch made");
-            
-   //  [self selectSpriteForTouch:touchLocation];
+
     return TRUE;    
+}
+
+-(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    controlButton.position = ccp(60, 60);
+    pulseOn = NO;
 }
 
 - (void)selectSpriteForTouch:(CGPoint)touchLocation {
 
-        if(CGRectContainsPoint(ball.ccNode.boundingBoxInPixels,
+        if(CGRectContainsPoint(controlButton.boundingBox,
                                touchLocation))
         {
-            [ball applyLinearImpulse:b2Vec2(0,[ball mass]*JUMP_IMPULSE) point:[ball worldCenter]];
+            pulseOn = YES;
         }
+}
+
+- (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event {
+    CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
+    
+    CGPoint oldTouchLocation = [touch previousLocationInView:touch.view];
+    oldTouchLocation = [[CCDirector sharedDirector] convertToGL:oldTouchLocation];
+    oldTouchLocation = [self convertToNodeSpace:oldTouchLocation];
+    
+    CGPoint translation = ccpSub(touchLocation, oldTouchLocation);
+    [self spriteTranslation:translation];
+}
+
+- (void)spriteTranslation:(CGPoint)translation {
+
+    CGPoint newPos = ccpAdd(controlButton.position, translation);
+    controlButton.position = newPos;
 }
 
 +(CCScene *) scene

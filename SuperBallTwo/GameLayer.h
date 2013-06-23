@@ -26,17 +26,12 @@
     Piston              *pistonAnimation;
     StaticObject        *rightPiston;
     StaticObject        *bridge;
-    CCSprite            *numbers[3];
     CCSprite            *pressureBar;
     CCSprite            *pressureBarPointer;
     CCSprite            *emmitterDevice;
     CCSprite            *controlButton;
     CCSprite            *controlButtonArrows;
-    StaticObject        *spinner;
     float               angle;
-    NSMutableArray      *triangleObjects;
-    NSMutableArray      *rightPlatforms;
-    NSMutableArray      *leftPlatforms;
     
     CCSpriteBatchNode   *objectLayer;  // Holds all active game objects
     CCSpriteBatchNode   *controlLayer; // Holds all HUD/control objects
@@ -48,6 +43,7 @@
     bool                justOnce;
     bool                spinnerExists;
     bool                wasNotDone;
+    BOOL                pulseOn;
     int                 numberOpacity;
     int                 currCountdown;
     int                 currNumber;
@@ -70,6 +66,7 @@
 
 // Bounces objects on screen
 -(void)bounceObject: (DynamicObject *) bouncingObject;
+-(void)spriteTranslation:(CGPoint)translation;
 
 
 @end
