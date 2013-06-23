@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		36074897177422AA0008EDD5 /* Controls-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = 36074893177422AA0008EDD5 /* Controls-hd.plist */; };
+		36074898177422AA0008EDD5 /* Controls-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = 36074894177422AA0008EDD5 /* Controls-hd.pvr.ccz */; };
+		36074899177422AA0008EDD5 /* Controls.plist in Resources */ = {isa = PBXBuildFile; fileRef = 36074895177422AA0008EDD5 /* Controls.plist */; };
+		3607489A177422AA0008EDD5 /* Controls.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = 36074896177422AA0008EDD5 /* Controls.pvr.ccz */; };
 		362031EE15F12A9D00DDD576 /* LauncherExplosion.plist in Resources */ = {isa = PBXBuildFile; fileRef = 362031ED15F12A9D00DDD576 /* LauncherExplosion.plist */; };
 		362BF8B21562D362002734DC /* GB2Contact.mm in Sources */ = {isa = PBXBuildFile; fileRef = 362BF8A21562D362002734DC /* GB2Contact.mm */; };
 		362BF8B31562D362002734DC /* GB2DebugDrawLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 362BF8A41562D362002734DC /* GB2DebugDrawLayer.mm */; };
@@ -186,10 +190,15 @@
 		36EE85BC155DA1A700D23733 /* sprites-hd.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = 36EE85B7155DA1A700D23733 /* sprites-hd.pvr.ccz */; };
 		36EE85BD155DA1A700D23733 /* sprites.plist in Resources */ = {isa = PBXBuildFile; fileRef = 36EE85B8155DA1A700D23733 /* sprites.plist */; };
 		36EE85BE155DA1A700D23733 /* sprites.pvr.ccz in Resources */ = {isa = PBXBuildFile; fileRef = 36EE85B9155DA1A700D23733 /* sprites.pvr.ccz */; };
+		36F3395417414C0200C5A993 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36F3395317414C0200C5A993 /* Default-568h@2x.png */; };
 		36F98836166FC5270099DF07 /* DynamicObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 36F98835166FC5270099DF07 /* DynamicObject.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		36074893177422AA0008EDD5 /* Controls-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Controls-hd.plist"; path = "Resources/Controls-hd.plist"; sourceTree = "<group>"; };
+		36074894177422AA0008EDD5 /* Controls-hd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Controls-hd.pvr.ccz"; path = "Resources/Controls-hd.pvr.ccz"; sourceTree = "<group>"; };
+		36074895177422AA0008EDD5 /* Controls.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Controls.plist; path = Resources/Controls.plist; sourceTree = "<group>"; };
+		36074896177422AA0008EDD5 /* Controls.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; name = Controls.pvr.ccz; path = Resources/Controls.pvr.ccz; sourceTree = "<group>"; };
 		362031ED15F12A9D00DDD576 /* LauncherExplosion.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = LauncherExplosion.plist; path = assets/Particles/LauncherExplosion.plist; sourceTree = "<group>"; };
 		362BF8A01562D362002734DC /* GB2Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GB2Config.h; sourceTree = "<group>"; };
 		362BF8A11562D362002734DC /* GB2Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GB2Contact.h; sourceTree = "<group>"; };
@@ -541,6 +550,7 @@
 		36EE85B7155DA1A700D23733 /* sprites-hd.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; name = "sprites-hd.pvr.ccz"; path = "Resources/sprites-hd.pvr.ccz"; sourceTree = "<group>"; };
 		36EE85B8155DA1A700D23733 /* sprites.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = sprites.plist; path = Resources/sprites.plist; sourceTree = "<group>"; };
 		36EE85B9155DA1A700D23733 /* sprites.pvr.ccz */ = {isa = PBXFileReference; lastKnownFileType = file; name = sprites.pvr.ccz; path = Resources/sprites.pvr.ccz; sourceTree = "<group>"; };
+		36F3395317414C0200C5A993 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		36F98834166FC5270099DF07 /* DynamicObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicObject.h; sourceTree = "<group>"; };
 		36F98835166FC5270099DF07 /* DynamicObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DynamicObject.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -592,6 +602,7 @@
 		36C7A0D9155ACC0E0048248D = {
 			isa = PBXGroup;
 			children = (
+				36F3395317414C0200C5A993 /* Default-568h@2x.png */,
 				36C7A0F8155ACC0F0048248D /* SteamBot */,
 				36C7A0E7155ACC0F0048248D /* Frameworks */,
 				36C7A0E5155ACC0F0048248D /* Products */,
@@ -653,6 +664,10 @@
 		36C7A0F9155ACC0F0048248D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				36074893177422AA0008EDD5 /* Controls-hd.plist */,
+				36074894177422AA0008EDD5 /* Controls-hd.pvr.ccz */,
+				36074895177422AA0008EDD5 /* Controls.plist */,
+				36074896177422AA0008EDD5 /* Controls.pvr.ccz */,
 				3633EE341680E79100A31630 /* FlameOut.caf */,
 				3633EE351680E79100A31630 /* FlameOut02.caf */,
 				3633EE2F1680DD3500A31630 /* SteamBuildup.caf */,
@@ -1200,6 +1215,11 @@
 				3633EE321680DD3500A31630 /* SteamShot.caf in Resources */,
 				3633EE361680E79100A31630 /* FlameOut.caf in Resources */,
 				3633EE371680E79100A31630 /* FlameOut02.caf in Resources */,
+				36F3395417414C0200C5A993 /* Default-568h@2x.png in Resources */,
+				36074897177422AA0008EDD5 /* Controls-hd.plist in Resources */,
+				36074898177422AA0008EDD5 /* Controls-hd.pvr.ccz in Resources */,
+				36074899177422AA0008EDD5 /* Controls.plist in Resources */,
+				3607489A177422AA0008EDD5 /* Controls.pvr.ccz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1375,8 +1395,8 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				SDKROOT = iphoneos;
 			};
@@ -1390,8 +1410,8 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;

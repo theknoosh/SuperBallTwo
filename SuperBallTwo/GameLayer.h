@@ -26,27 +26,28 @@
     Piston              *pistonAnimation;
     StaticObject        *rightPiston;
     StaticObject        *bridge;
-    StaticObject        *bigBumper;
     CCSprite            *numbers[3];
     CCSprite            *pressureBar;
     CCSprite            *pressureBarPointer;
-    CCSprite            *smallBumper;
     CCSprite            *emmitterDevice;
-   
-    // ****** Revolute Joint *******
+    CCSprite            *controlButton;
+    CCSprite            *controlButtonArrows;
+    StaticObject        *spinner;
+    float               angle;
+    NSMutableArray      *triangleObjects;
+    NSMutableArray      *rightPlatforms;
+    NSMutableArray      *leftPlatforms;
     
-    b2Body              *wallBody;
-    b2Body              *baseBody;
-    b2Fixture           *wallFixture;
-    b2Fixture           *baseFixture;
-    b2RevoluteJoint     *wallJoint;
-    
-    // ****** End Revolute Joint *********
+    CCSpriteBatchNode   *objectLayer;  // Holds all active game objects
+    CCSpriteBatchNode   *controlLayer; // Holds all HUD/control objects
     
     bool                runOnce;
     bool                doCountDown;
     bool                toggle;
     bool                playSoundOnce;
+    bool                justOnce;
+    bool                spinnerExists;
+    bool                wasNotDone;
     int                 numberOpacity;
     int                 currCountdown;
     int                 currNumber;
@@ -67,6 +68,8 @@
 // returns a CCScene that contains the GameLayer as the only child
 +(CCScene *) scene;
 
+// Bounces objects on screen
+-(void)bounceObject: (DynamicObject *) bouncingObject;
 
 
 @end

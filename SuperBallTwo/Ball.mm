@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#define JUMP_IMPULSE 8.0f
+#define JUMP_IMPULSE 2.0f
 
 #import "Ball.h"
 #import "GameLayer.h"
@@ -64,7 +64,7 @@
     
     NSLog(@"Fixture ID = %@ at position %f,%f", fixtureID, posConv.x,posConv.y);
     
-    [self applyLinearImpulse:b2Vec2(0,[self mass]*JUMP_IMPULSE) point:[self worldCenter]];
+    // [self applyLinearImpulse:b2Vec2(-([self mass]*JUMP_IMPULSE),[self mass]*JUMP_IMPULSE) point:[self worldCenter]];
     _inContact = true;
 }
 

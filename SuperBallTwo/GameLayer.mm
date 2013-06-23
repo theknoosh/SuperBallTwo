@@ -7,7 +7,7 @@
 //
 
 // #define JUMP_IMPULSE 12.5f
-#define JUMP_IMPULSE 12.0f
+#define JUMP_IMPULSE 24.0f
 #define WIDTH 320
 #define HEIGHT 480
 #define POINTERX 45
@@ -15,6 +15,7 @@
 #define NORMAL 0
 #define ANGRY 1
 #define SHAKE 2
+#define ARC4RANDOM_MAX      0x100000000
 
 #import "GameLayer.h"
 #import "GB2DebugDrawLayer.h"
@@ -35,27 +36,27 @@
         
         [SimpleAudioEngine sharedEngine];
         
-        // Load all Sprites
+        
+        // Load all assets *******************************
+        
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"sprites.plist"];
+        
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Background.plist"];
+        
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Controls.plist"];
         
          // Load Box2d Shapes
         [[GB2ShapeCache sharedShapeCache] addShapesWithFile:@"shapes.plist"];
         
-        
-       /* // Define the gravity vector.
-		b2Vec2 gravity;
-		gravity.Set(0.0f, -10.0f);
-        
-        // Do we want to let bodies sleep?
-		// This will speed up the physics simulation
-		bool doSleep = true;
-        
-        // Construct a world object, which will hold and simulate the rigid bodies.
-		world = new b2World(gravity, doSleep); */
-        
-        
+        // ***********************************************
+
         world = [[GB2Engine sharedInstance]world];
+        // world->SetGravity(b2Vec2FromCC(0, -9.0f));
+        
+        justOnce = YES;
+        spinnerExists = NO;
+        
+        // Setup all graphics ****************************
         
         // Setup game background layer
         background = [CCSprite spriteWithSpriteFrameName:@"Background.png"];
@@ -75,92 +76,64 @@
         GB2Node *theFloor = [[GB2Node alloc] initWithStaticBody:nil node:nil];
         [theFloor addEdgeFrom:b2Vec2FromCC(0, 0) to:b2Vec2FromCC(0, 320)];
         
+         // Setup object layer
+        // Contains all active objects
+    	objectLayer = [CCSpriteBatchNode batchNodeWithFile:@"sprites.pvr.ccz" capacity:150];
+        [self addChild:objectLayer z:10];
+        
+        // Setup control layer
+        controlLayer = [CCSpriteBatchNode batchNodeWithFile:@"Controls.pvr.ccz" capacity:150];
+        [self addChild:controlLayer z:10];
+       
         // Load physics object Launcher
         launcher = [[[Launcher alloc] initWithGameLayer:self] autorelease];
-        [self addChild:[launcher ccNode] z:25];
+        [objectLayer addChild:[launcher ccNode] z:25];
         [launcher setPhysicsPosition:b2Vec2FromCC(60, 0)];
-        
         
         // Setup for the bridge
         bridge = [[StaticObject alloc]initWithGameLayer:self andObjName:@"brokenBridge"andSpriteName:@"brokenBridge.png"];
-        [self addChild:[bridge ccNode] z:25];
+        [objectLayer addChild:[bridge ccNode] z:25];
         // [bridge setPhysicsPosition:b2Vec2FromCC(160, 250)];
         [bridge setActive:NO];
-                
-        bigBumper = [[StaticObject alloc]initWithGameLayer:self andObjName:@"bigBumper" andSpriteName:@"bigBumper.png"];
-        [self addChild:[bigBumper ccNode]z:20];
         
+        // Initialize NSMutableArray
+        // triangleObjects = [[NSMutableArray alloc] init];
+        rightPlatforms = [[NSMutableArray alloc] init];
+        leftPlatforms = [[NSMutableArray alloc] init];
         
-        // **** Definition for the RevoluteJoint *********
+        float curHeight = 450.0f;
         
-        // ************ Definition for the wall ************
-        // Need two b2Bodies - this is the first one
+        // Array of left and right platforms (3 each)
+        for (NSUInteger x=0; x<7; x++) {
+            [rightPlatforms addObject:[[StaticObject alloc] initWithGameLayer:self andObjName:@"rightPlatform" andSpriteName:@"rightPlatform.png"]];
+            [leftPlatforms addObject:[[StaticObject alloc] initWithGameLayer:self andObjName:@"leftPlatform" andSpriteName:@"leftPlatform.png"]];
+            
+            [[leftPlatforms objectAtIndex:x] setPhysicsPosition:b2Vec2FromCC(100.0f, curHeight)];
+            [[rightPlatforms objectAtIndex:x] setPhysicsPosition:b2Vec2FromCC(250.0f, curHeight + 150.0f)];
+            curHeight += 300.0f;
+            
+            [[leftPlatforms objectAtIndex:x]setActive:NO];
+            [[rightPlatforms objectAtIndex:x]setActive:NO];
+            
+        }
         
-
-        smallBumper = [CCSprite spriteWithSpriteFrameName:@"smallBumper.png"];
-        [self addChild:smallBumper z:25];
+        // Gothic Spinner
+        spinner = [[StaticObject alloc] initWithGameLayer:self andObjName:@"spinner" andSpriteName:@"spinner.png"];
+        [spinner setPhysicsPosition:b2Vec2FromCC(300.0f, 420.0f)];
+        [spinner setActive:NO];
         
-        b2BodyDef wallBodyDef;
-        wallBodyDef.type = b2_dynamicBody;
-        wallBodyDef.linearDamping = 1;
-        wallBodyDef.angularDamping = 1;
-        wallBodyDef.position.Set(75.0f/PTM_RATIO, 370.0f/PTM_RATIO);
-        // wallBodyDef.userData = smallBumper;
-        wallBody = world->CreateBody(&wallBodyDef);
-                
-        // Load fixture from shape.plist file instead of creating it here
-        [[GB2ShapeCache sharedShapeCache] addFixturesToBody:wallBody forShapeName:@"smallBumper"];
-        [smallBumper setAnchorPoint:[[GB2ShapeCache sharedShapeCache]anchorPointForShape:@"smallBumper"]];
-        
-        // ********** End Definition of Wall **************
-        
-        // ********** Definition for the emitter **********
-        // This is the 2nd of two b2Bodies
-        
-       
         emmitterDevice = [CCSprite spriteWithSpriteFrameName:@"newEmitter.png"];
-        [self addChild:emmitterDevice z:25];
+        [objectLayer addChild:emmitterDevice z:25];
+        [emmitterDevice setPosition:ccp(50, 370)]; // emitter is simple sprite
         
-        b2BodyDef emitterDef;
-        emitterDef.type = b2_staticBody;
-        emitterDef.linearDamping = 1;
-        emitterDef.angularDamping = 1;
-        emitterDef.position.Set(0, 365.0f/PTM_RATIO);
-        emitterDef.angle = 0;
-        // emitterDef.userData = emmitterDevice;
-        baseBody = world->CreateBody(&emitterDef);
+        controlButton = [CCSprite spriteWithSpriteFrameName:@"ControlButton.png"];
+        [controlLayer addChild:controlButton z:25];
+        [controlButton setPosition:ccp(60, 60)];
+        
+        controlButtonArrows = [CCSprite spriteWithSpriteFrameName:@"ControlButtonArrows.png"];
+        [controlLayer addChild:controlButtonArrows z:24];
+        [controlButtonArrows setPosition:ccp(60, 60)];
                 
-        // Load fixture for baseBody
-        [[GB2ShapeCache sharedShapeCache] addFixturesToBody:baseBody forShapeName:@"newEmitter"];
-        [emmitterDevice setAnchorPoint:[[GB2ShapeCache sharedShapeCache] anchorPointForShape:@"newEmitter"]];
-       
-        
-        // *********** End Definition of the emitter ******
-        
-        // Define the joint to fix the wall to floor of bridge
-        
-        b2RevoluteJointDef  wallJointDef;
-        wallJointDef.Initialize(wallBody, baseBody, b2Vec2(75.0/PTM_RATIO,390.0f/PTM_RATIO));
-        wallJointDef.enableMotor = true;
-        wallJointDef.enableLimit = true;
-        wallJointDef.motorSpeed = 0;
-        wallJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(1.65f);
-        wallJointDef.upperAngle = CC_DEGREES_TO_RADIANS(20);
-        wallJointDef.maxMotorTorque = 50;
-        wallJoint = (b2RevoluteJoint *)world->CreateJoint(&wallJointDef);
-        
-        // ***** END TEST *******
-
-
-        pressureBar = [CCSprite spriteWithSpriteFrameName:@"PressureBar.png"];
-        
-        [self addChild:pressureBar z:200];
-        pressureBar.position = ccp(160,460);
-        
-        pressureBarPointer = [CCSprite spriteWithSpriteFrameName:@"PressureBarPointer.png"];
-        [self addChild:pressureBarPointer z:205];
-        pressureBarPointer.position = ccp(POINTERX, 470);
-        
         //Setup for numbers
         numbers[0] = [CCSprite spriteWithSpriteFrameName:@"NumberThree.png"];
         numbers[0].opacity = 0;
@@ -181,16 +154,19 @@
         particles = [CCParticleSystemQuad particleWithFile:@"ParticleTest.plist"];
         [self addChild:particles z:22];
         particles.scale = .6;
-        particles.position = ccp(160,100);
+        particles.position = ccp(160,200);
+
         
         //particles from pods
         podParticles = [CCParticleSystemQuad particleWithFile:@"ParticleEmitter.plist"];
         podParticles.scale = .75;
+        [podParticles setPosition:ccp(160,80)];
+        // [self addChild:podParticles z:22];
         
         // Setup Ball
         ball = [[[Ball alloc] initWithGameLayer:self] autorelease];
-        [self addChild:[ball ccNode] z:20];
-        [ball setPhysicsPosition:b2Vec2FromCC(160,120)];
+        [objectLayer addChild:[ball ccNode] z:2];
+        [ball setPhysicsPosition:b2Vec2FromCC(160,220)];
         [ball setActive:NO];
         [ball setVisible:NO];
         
@@ -208,7 +184,8 @@
         currPressure = 0.0f; // initial pressure
         toggle = true; // Initial toggle
         shakeDelay = 0;
-        playSoundOnce = true;
+        playSoundOnce = YES;
+        wasNotDone = YES;
         
      }
     return self;
@@ -218,8 +195,6 @@
 {
     curTime += dt;
     
-    // [ball updateCCFromPhysics];
-        
     if (curTime> 5.0f && runOnce == false) {
         
         runOnce = true;
@@ -230,9 +205,27 @@
         [ball setActive:YES];
     }
     
+    // Speed of the ball, when it gets below 1, it is at
+    // top of arc
+    
+    b2Vec2 currentVelocity = [ball linearVelocity];
+    float currentSpeed = currentVelocity.Length();    
+    
+    if (doCountDown && ball.active == YES) {
+        [launcher setToOpen];
+    }
+    
+   /*
+   double y = ((double)arc4random() / ARC4RANDOM_MAX) * 1.0f;
+    // NSLog(@"Random number: %f",y-1);
+    
+    CGPoint pos = [triangle position];
+    [triangle setPosition:ccp(pos.x + (y-.5), pos.y + (y-.5))];
+    */
+    
+    /*
     
     // Do the countdown here
-    
     if (doCountDown && ball.active == YES) {
         [launcher setToOpen];
         ++currCountdown;
@@ -257,77 +250,90 @@
             }
         }
         numbers[currNumber].opacity = numberOpacity;
-    }
+    } */
     
-    
+
     // Camera follows ball
     float mY = [ball physicsPosition].y * PTM_RATIO;
     const float ballHeight = 50.0f;
     const float screenHeight = 480.0f;
-    // float cY = mY - ballHeight - screenHeight/2.0f;
-    float cY = mY -ballHeight - screenHeight/2;
+    float cY = mY - ballHeight - screenHeight/2 - (screenHeight/4);
     if(cY < 0)
     {
         cY = 0;
     }
     
     // Lock the bridge into position and start emitter
-    if (cY > 300.0f && modeLevel == 0)
+    
+    if (cY > 500.0f && modeLevel == 0)
     {
         modeLevel = 1;
-        [self addChild:podParticles z:22];
-        [[SimpleAudioEngine sharedEngine] playEffect:@"FlameOut.caf" pitch:1.0 pan:-1.0 gain:1.0];
+                
         /*
-        if ([ball physicsPosition].y * PTM_RATIO > screenHeight) {
-            [ball setPhysicsPosition:b2Vec2FromCC(7.0f,[ball physicsPosition].x)];
-        } */
-
-        // [bridge setActive:YES];
-        wallJoint->SetMotorSpeed(1.0f);
+        [objectLayer addChild:[spinner ccNode] z:25];
+        [spinner setActive:YES];
+        spinnerExists = YES;
+        */
     }
     
     if (cY < 300.0f && modeLevel == 1) {
         cY = 300.0f;
      }
+    static float gridPosition = 400;
+    // static NSInteger curIndex = 0;
     
-    /* if(cY > 600.0f && modeLevel == 1){
-        modeLevel = 2;
-        cY = 600.0f;
-    }
-    
-    if (modeLevel == 2) {
-        cY = 600.0f;
+    // This section places random triangles
+   /* if (mY > gridPosition + 100) {
+        
+        
+        if (currentSpeed < 1 && wasNotDone) {
+            
+            
+            for (NSUInteger x=0; x<7; x++) {
+                [objectLayer addChild:[[rightPlatforms objectAtIndex:x]ccNode]z:25];
+                [objectLayer addChild:[[leftPlatforms objectAtIndex:x]ccNode]z:25];
+                [[leftPlatforms objectAtIndex:x]setActive:YES];
+                [[rightPlatforms objectAtIndex:x]setActive:YES];
+            }
+            wasNotDone = NO;
+            [triangleObjects addObject:[[StaticObject alloc] initWithGameLayer:self andObjName:@"triangle" andSpriteName:@"triangle.png"]];
+            int xLoc = arc4random() % 3;
+            [[triangleObjects objectAtIndex:curIndex] setPhysicsPosition:b2Vec2FromCC(((float) xLoc * 106) + 53, gridPosition)];
+            [[triangleObjects objectAtIndex:curIndex]setActive:YES];
+            [objectLayer addChild:[[triangleObjects objectAtIndex:curIndex] ccNode]z:25];
+            curIndex++;
+            gridPosition += 106.0f;
+        }
     } */
     
-    // Do some parallax scrolling
-    [launcher setPhysicsPosition:b2Vec2FromCC(60, -cY)];
-    [bridge setPhysicsPosition:b2Vec2FromCC(0, 250-cY)];
-    [podParticles setPosition:ccp(32,381-cY)];
-    [bigBumper setPhysicsPosition:b2Vec2FromCC(75, 600-cY)];
+    /*
+    if (spinnerExists) {
+        [spinner setAngle:angle];
+        angle -= 0.01f;
+        if (angle < -6.2831f) {
+            angle = 0;
+        }
     
-    wallBody->SetTransform(b2Vec2FromCC(75, 355-cY),wallBody->GetAngle());
-    baseBody->SetTransform(b2Vec2FromCC(0, 350.0f-cY), baseBody->GetAngle());
+    } */
     
+    [bridge setPhysicsPosition:b2Vec2FromCC(0, 250)];
+    [launcher setPhysicsPosition:b2Vec2FromCC(60, 0)];
+    
+    [objectLayer setPosition:ccp(0, -cY)]; // move objectLayer
     [background setPosition:ccp(0,-cY*0.6)]; // move main background slower than foreground
-    
-    smallBumper.position = CGPointMake(wallBody->GetPosition().x * PTM_RATIO, wallBody->GetPosition().y * PTM_RATIO);
-    smallBumper.rotation = -1 * CC_RADIANS_TO_DEGREES(wallBody->GetAngle());
-    
-    emmitterDevice.position = CGPointMake(baseBody->GetPosition().x * PTM_RATIO, baseBody->GetPosition().y * PTM_RATIO);
-    emmitterDevice.rotation = -1 * CC_RADIANS_TO_DEGREES(baseBody->GetAngle());
     
     // Ball bounces to a stop above the particle emitter
     
-    float base = 100.0f;
-    float targetHeight = 110.0f;
+    float base = 0.0f;
+    float targetHeight = 120.0f;
     float distanceAboveGround = mY - base;
     b2Vec2 ballVel = [ball linearVelocity];
     float   springConstant = 0.25f;
     
     // Determine whether SteamBot is directly above the emmitterDevice
     CGPoint  leftBoundry, rightBoundry; // left and right side of corridor
-    leftBoundry = ccp(0, 0);
-    rightBoundry = ccp(75.0f, 0);
+    leftBoundry = ccp(125.0f, 0);
+    rightBoundry = ccp(200.0f, 0);
     bool isInCorridor; // Is the SteamBot in the corridor (x cood only)
     
     // Where is the SteamBot
@@ -341,9 +347,9 @@
     
     //dont do anything if too far above ground or not in the correct level or not in the corridor
     // All three must be true
-    if ( distanceAboveGround < targetHeight && modeLevel == 1 && isInCorridor) {
+    if ( distanceAboveGround < targetHeight && isInCorridor) {
         
-        wallJoint->SetMotorSpeed(-1.0f);
+        // wallJoint->SetMotorSpeed(-1.0f);
         //replace distanceAboveGround with the 'look ahead' distance
         //this will look ahead 0.25 seconds - longer gives more 'damping'
         // Higher numbers reduce 'bounce' of ball
@@ -355,6 +361,8 @@
         //negate gravity
         [ball applyForce:[ball mass] * -world->GetGravity() point:[ball worldCenter]];
         
+        targetHeight++;
+        
         // Increase pressure on ball
         currPressure += 0.2f;
         
@@ -364,11 +372,11 @@
 
             [ball setMood:ANGRY];
             
-            if (playSoundOnce) {
+            /* if (playSoundOnce) {
                 [[SimpleAudioEngine sharedEngine] playEffect:@"SteamBuildup.caf" pitch:1.0 pan:-1.0 gain:1.0];
                 
                 playSoundOnce = false;
-            }
+            } */
             
              if (shakeDelay > SHAKE) {
 
@@ -423,17 +431,6 @@
 
 - (void)selectSpriteForTouch:(CGPoint)touchLocation {
 
-        if (CGRectContainsPoint(pistonAnimation.ccNode.boundingBoxInPixels, touchLocation))
-        {
-            if (![pistonAnimation isOpen]) {
-                [pistonAnimation openPiston];
-                [pistonAnimation setActive:YES];
-            }else{
-                [pistonAnimation closePiston];
-                [pistonAnimation setActive:NO];
-            }
-            
-        }
         if(CGRectContainsPoint(ball.ccNode.boundingBoxInPixels,
                                touchLocation))
         {
@@ -454,6 +451,42 @@
     
     // return the scene
     return scene;
+}
+
+-(void)bounceObject: (DynamicObject *) bouncingObject
+{
+    // Object bounces to a stop above specified point
+    
+    float mY = [bouncingObject physicsPosition].y * PTM_RATIO;
+    
+    float base = 0.0f;
+    static float targetHeight;
+    float distanceAboveGround = mY - base;
+    
+    if (justOnce) {
+        targetHeight = mY - 100;
+        justOnce = NO;
+    }
+    
+    b2Vec2 ObVel = [bouncingObject linearVelocity];
+    float   springConstant = 0.25f;
+        
+    //dont do anything if too far above ground
+    // All three must be true
+    if ( distanceAboveGround < targetHeight) {
+        
+        //replace distanceAboveGround with the 'look ahead' distance
+        //this will look ahead 0.25 seconds - longer gives more 'damping'
+        // Higher numbers reduce 'bounce' of ball
+        distanceAboveGround += 2.5f * ObVel.y;
+        
+        float distanceAwayFromTargetHeight = targetHeight - distanceAboveGround;
+        [bouncingObject applyForce:b2Vec2(0,springConstant * distanceAwayFromTargetHeight) point:[bouncingObject worldCenter]];
+        
+        //negate gravity
+        [bouncingObject applyForce:[bouncingObject mass] * -world->GetGravity() point:[bouncingObject worldCenter]];
+        
+    }
 }
 
 @end
