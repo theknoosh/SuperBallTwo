@@ -196,9 +196,10 @@
         modeLevel = 1;
     }
     
-    if (cY < 300.0f && modeLevel == 1) {
+    /* if (cY < 300.0f && modeLevel == 1) {
         cY = 300.0f;
-     }
+     } */
+    
     static float gridPosition = 400;
     
     [bridge setPhysicsPosition:b2Vec2FromCC(0, 250)];
@@ -291,7 +292,12 @@
         pressureBarPointer.position = ccp(POINTERX_MAX, 470);
     }
     if (pulseOn) {
-        [ball applyLinearImpulse:b2Vec2(0,[ball mass]*JUMP_IMPULSE) point:[ball worldCenter]];
+        // TODO: Calculate pulse for ball
+        CGPoint impulse;
+        impulse = controlButton.position;
+        
+        [ball applyLinearImpulse:b2Vec2(0,[ball mass]*JUMP_IMPULSE)point:[ball worldCenter]];
+        // NSLog(@"%f",[ball mass]*JUMP_IMPULSE);
     }
 }
 
@@ -320,7 +326,7 @@
         if(CGRectContainsPoint(controlButton.boundingBox,
                                touchLocation))
         {
-            pulseOn = YES;
+            // pulseOn = YES;
         }
 }
 
@@ -339,6 +345,25 @@
 
     CGPoint newPos = ccpAdd(controlButton.position, translation);
     controlButton.position = newPos;
+    CGPoint pos = controlButton.position;
+    if (pos.x > 80.0) {
+        pos.x = 80.0;
+    }else if (pos.x < 40){
+        pos.x = 40;
+    }
+    if(pos.y > 80.0){
+        pos.y = 80.0;
+    }else {
+        if (pos.y < 60.0) {
+            pos.y = 60.0;
+        }
+    }
+    if (pos.y>70) {
+        pulseOn = YES;
+    }else {
+        pulseOn = NO;
+    }
+    controlButton.position = pos;
 }
 
 +(CCScene *) scene
