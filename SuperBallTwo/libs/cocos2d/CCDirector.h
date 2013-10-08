@@ -144,6 +144,11 @@ and when to execute the Scenes.
 #endif
 }
 
+// Modified for memory management by Darrell Payne
++(double) getAvailableBytes;
++(double) getAvailableKiloBytes;
++(double) getAvailableMegaBytes;
+
 /** returns the cocos2d thread.
  If you want to run any cocos2d task, run it in this thread.
  On iOS usually it is the main thread.

@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-// #define JUMP_IMPULSE 12.5f
-#define JUMP_IMPULSE 0.4f
+#define JUMP_IMPULSE 25.0f
+// #define JUMP_IMPULSE 0.4f
 #define WIDTH 320
 #define HEIGHT 480
 #define POINTERX 45
@@ -15,6 +15,7 @@
 #define NORMAL 0
 #define ANGRY 1
 #define SHAKE 2
+#define LDELAY 100
 #define ARC4RANDOM_MAX      0x100000000
 
 #import "GameLayer.h"
@@ -25,6 +26,19 @@
 #import "Piston.h"
 #import "DynamicObject.h"
 #import "SimpleAudioEngine.h"
+
+
+// Private iVars
+@interface GameLayer()
+{
+    
+}
+
+@property (nonatomic,strong) CCSprite   *lightning;
+@property (nonatomic, strong) CCAction *lightningAction;
+
+
+@end
 
 
 @implementation GameLayer
@@ -56,9 +70,10 @@
         justOnce = YES;
         spinnerExists = NO;
         pulseOn = NO;
+        ballInPlay = NO;
         
         // Setup all graphics ****************************
-        
+                
         // Setup game background layer
         background = [CCSprite spriteWithSpriteFrameName:@"Background.png"];
         [self addChild:background z:0];
@@ -73,20 +88,44 @@
         GB2Node *rightWall = [[GB2Node alloc] initWithStaticBody:nil node:nil];
         [rightWall addEdgeFrom:b2Vec2FromCC(320, 0) to:b2Vec2FromCC(320, 20000)];
         
-        // add floor
+        /*
+         // add floor
         GB2Node *theFloor = [[GB2Node alloc] initWithStaticBody:nil node:nil];
-        [theFloor addEdgeFrom:b2Vec2FromCC(0, 0) to:b2Vec2FromCC(0, 320)];
+        [theFloor addEdgeFrom:b2Vec2FromCC(0, 0) to:b2Vec2FromCC(320, 0)];
+         */
         
          // Setup object layer
         // Contains all active objects
     	objectLayer = [CCSpriteBatchNode batchNodeWithFile:@"sprites.pvr.ccz" capacity:150];
         [self addChild:objectLayer z:10];
         
+        effectsLayer = [[CCLayer alloc]init];
+        [self addChild:effectsLayer z:1];
+        
+        // Lose the lightning for now
+        /* NSMutableArray *lightningAnimFrames = [NSMutableArray array];
+        for (int i=0; i<=5; i++) {
+            [lightningAnimFrames addObject:
+             [[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:
+              [NSString stringWithFormat:@"LightningAnim000%d.png",i]]];
+        }
+        
+        CCAnimation *LightningAnim = [CCAnimation animationWithFrames:lightningAnimFrames delay:0.1f];
+        
+        self.lightning = [CCSprite spriteWithSpriteFrameName:@"LightningAnim0001.png"];
+        self.lightning.position = ccp(160, 370);
+        self.lightningAction = [CCRepeatForever actionWithAction:[CCAnimate actionWithAnimation:LightningAnim]];
+        [self.lightning runAction:self.lightningAction];
+        [objectLayer addChild:self.lightning];
+        */
+        
         // Setup control layer
         controlLayer = [CCSpriteBatchNode batchNodeWithFile:@"Controls.pvr.ccz" capacity:150];
         [self addChild:controlLayer z:10];
        
+        // Lose the launcher and the bridge
         // Load physics object Launcher
+        /*
         launcher = [[[Launcher alloc] initWithGameLayer:self] autorelease];
         [objectLayer addChild:[launcher ccNode] z:25];
         [launcher setPhysicsPosition:b2Vec2FromCC(60, 0)];
@@ -95,31 +134,50 @@
         bridge = [[StaticObject alloc]initWithGameLayer:self andObjName:@"brokenBridge"andSpriteName:@"brokenBridge.png"];
         [objectLayer addChild:[bridge ccNode] z:25];
         // [bridge setPhysicsPosition:b2Vec2FromCC(160, 250)];
-        [bridge setActive:NO];
+        [bridge setActive:YES];
+         */
         
-        // Initialize NSMutableArray
-        // triangleObjects = [[NSMutableArray alloc] init];
+        leftDrain = [[StaticObject alloc]initWithGameLayer:self andObjName:@"leftDrain" andSpriteName:@"leftDrain.png"];
+        [objectLayer addChild:[leftDrain ccNode]z:25];
+        [leftDrain setPhysicsPosition:b2Vec2FromCC(0.0, 0.0)];
+        [leftDrain setActive:YES];
+        
+        rightDrain = [[StaticObject alloc]initWithGameLayer:self andObjName:@"rightDrain" andSpriteName:@"rightDrain.png"];
+        [objectLayer addChild:[rightDrain ccNode]z:25];
+        [rightDrain setPhysicsPosition:b2Vec2FromCC(320.0, 0.0)];
+        [rightDrain setActive:YES];
+        
+        roof = [[StaticObject alloc]initWithGameLayer:self andObjName:@"roof" andSpriteName:@"roof.png"];
+        [objectLayer addChild:[roof ccNode]z:25];
+        [roof setPhysicsPosition:b2Vec2FromCC(0.0, 2400.0)];
+        [roof setActive:YES];
         
         float curHeight = 450.0f;
         
         emmitterDevice = [CCSprite spriteWithSpriteFrameName:@"newEmitter.png"];
         [objectLayer addChild:emmitterDevice z:25];
-        [emmitterDevice setPosition:ccp(50, 370)]; // emitter is simple sprite
+        [emmitterDevice setPosition:ccp(40, 248)]; // emitter is simple sprite
         
         controlButton = [CCSprite spriteWithSpriteFrameName:@"ControlButton.png"];
         [controlLayer addChild:controlButton z:25];
-        [controlButton setPosition:ccp(60, 60)];
+        [controlButton setPosition:ccp(40, 60)];
         
-        controlButtonArrows = [CCSprite spriteWithSpriteFrameName:@"ControlButtonArrows.png"];
+        /* controlButtonArrows = [CCSprite spriteWithSpriteFrameName:@"ControlButtonArrows.png"];
         [controlLayer addChild:controlButtonArrows z:24];
         [controlButtonArrows setPosition:ccp(60, 60)];
+         */
         
-        // Set off particles
+        /* // Set off particles
         particles = [CCParticleSystemQuad particleWithFile:@"ParticleTest.plist"];
         [self addChild:particles z:22];
         particles.scale = .6;
         particles.position = ccp(160,200);
-
+         */
+        
+        // Fire for device
+        fireEffect = [CCParticleSystemQuad particleWithFile:@"fire.plist"];
+        [effectsLayer addChild:fireEffect z:1];
+        fireEffect.position = ccp(35, 250);
         
         //particles from pods
         podParticles = [CCParticleSystemQuad particleWithFile:@"ParticleEmitter.plist"];
@@ -130,7 +188,7 @@
         // Setup Ball
         ball = [[[Ball alloc] initWithGameLayer:self] autorelease];
         [objectLayer addChild:[ball ccNode] z:2];
-        [ball setPhysicsPosition:b2Vec2FromCC(160,220)];
+        [ball setPhysicsPosition:b2Vec2FromCC(45,500)];
         [ball setActive:NO];
         [ball setVisible:NO];
         
@@ -162,9 +220,9 @@
     if (curTime> 5.0f && runOnce == false) {
         
         runOnce = true;
-        if (particles != NULL) {
+        /* if (particles != NULL) {
             [self removeChild:particles cleanup:YES];
-        }
+        }*/
         [ball setVisible:YES];
         [ball setActive:YES];
     }
@@ -173,132 +231,131 @@
     // top of arc
     
     b2Vec2 currentVelocity = [ball linearVelocity];
-    float currentSpeed = currentVelocity.Length();    
+    float currentSpeed = currentVelocity.Length();
     
-    if (doCountDown && ball.active == YES) {
-        [launcher setToOpen];
-    }
+ 
+  
     
-    // Camera follows ball
+    // Track position of ball in relation to screen
     float mY = [ball physicsPosition].y * PTM_RATIO;
     const float ballHeight = 50.0f;
     const float screenHeight = 480.0f;
-    float cY = mY - ballHeight - screenHeight/2 - (screenHeight/4);
-    if(cY < 0)
-    {
-        cY = 0;
-    }
+    float cY;
     
-    // Lock the bridge into position and start emitter
-    
-    if (cY > 500.0f && modeLevel == 0)
-    {
-        modeLevel = 1;
-    }
-    
-    /* if (cY < 300.0f && modeLevel == 1) {
-        cY = 300.0f;
-     } */
-    
-    static float gridPosition = 400;
-    
-    [bridge setPhysicsPosition:b2Vec2FromCC(0, 250)];
-    [launcher setPhysicsPosition:b2Vec2FromCC(60, 0)];
-    
+    // Ball falls off bottom of screen - reset game
+    if (mY < -25) {
+        ballInPlay = FALSE;
+        [ball setPhysicsPosition:b2Vec2FromCC(45,500)];
+        mY = [ball physicsPosition].y * PTM_RATIO;
+        ball.linearVelocity = b2Vec2FromCC(0.0, 0.0);
+        [ball setVisible:NO];
+        [ball setActive:NO];
+        runOnce = false;
+        curTime = 0.0;
+    }   
+        
+    // Follow ball on screen
+    if (ballInPlay) {
+       
+        cY = mY - ballHeight - screenHeight/2 - (screenHeight/4);
+        if(cY < 0)
+        {
+            cY = 0;
+        }
+        
     [objectLayer setPosition:ccp(0, -cY)]; // move objectLayer
+    [effectsLayer setPosition:ccp(0, -cY)]; // move effectsLayer
     [background setPosition:ccp(0,-cY*0.6)]; // move main background slower than foreground
+
+    }
     
     // Ball bounces to a stop above the particle emitter
     
-    float base = 0.0f;
-    float targetHeight = 120.0f;
-    float distanceAboveGround = mY - base;
-    b2Vec2 ballVel = [ball linearVelocity];
-    float   springConstant = 0.25f;
-    
-    // Determine whether SteamBot is directly above the emmitterDevice
-    CGPoint  leftBoundry, rightBoundry; // left and right side of corridor
-    leftBoundry = ccp(125.0f, 0);
-    rightBoundry = ccp(200.0f, 0);
-    bool isInCorridor; // Is the SteamBot in the corridor (x cood only)
-    
-    // Where is the SteamBot
-    b2Vec2 ballPos = [ball physicsPosition];
-    CGPoint ccBallPos = ccpMult(CGPointMake(ballPos.x, ballPos.y), PTM_RATIO); // Convert to CGPoint
-    
-    if (ccBallPos.x > leftBoundry.x && ccBallPos.x < rightBoundry.x) {
-        isInCorridor = true;
-    }else isInCorridor = false;
+    corridor col1;
+    col1.base = 200.0f;
+    col1.targetheight = 120.0f;
+    col1.springConstant = 0.25f;
+    col1.left = 0.0f;
+    col1.right = 75.0f;
+    col1.lookahead = 2.5f; // 2.5f is the default value!! .25 very bouncy.
     
     
-    //dont do anything if too far above ground or not in the correct level or not in the corridor
-    // All three must be true
-    if ( distanceAboveGround < targetHeight && isInCorridor) {
-        
-        //replace distanceAboveGround with the 'look ahead' distance
-        //this will look ahead 0.25 seconds - longer gives more 'damping'
-        // Higher numbers reduce 'bounce' of ball
-        distanceAboveGround += 2.5f * ballVel.y;
-        
-        float distanceAwayFromTargetHeight = targetHeight - distanceAboveGround;
-        [ball applyForce:b2Vec2(0,springConstant * distanceAwayFromTargetHeight) point:[ball worldCenter]];
-        
-        //negate gravity
-        [ball applyForce:[ball mass] * -world->GetGravity() point:[ball worldCenter]];
-        
-        targetHeight++;
-        
-        // Increase pressure on ball
-        currPressure += 0.2f;
-        
-        // Shake SteamBot after pressure hits
-        if(currPressure > 115)
-        {
-
-            [ball setMood:ANGRY];
+    float distanceAboveGround = mY - col1.base;
+    
+    float base = col1.base;
+    
+    // Determine ball position
+    b2Vec2  ballPos = [ball physicsPosition];
+    CGPoint ccBallPos = ccpMult(CGPointMake(ballPos.x, ballPos.y), PTM_RATIO); // Convert to cgpoint
+    
+    // Is the ball within the left and right boundaries
+    if (ccBallPos.x > col1.left && ccBallPos.x < col1.right) {
+        //dont do anything if too far above ground
+        if ( distanceAboveGround < col1.targetheight) {
             
-            /* if (playSoundOnce) {
-                [[SimpleAudioEngine sharedEngine] playEffect:@"SteamBuildup.caf" pitch:1.0 pan:-1.0 gain:1.0];
-                
-                playSoundOnce = false;
-            } */
+            [self bounceObject:col1];
             
-             if (shakeDelay > SHAKE) {
-
-                shakeDelay = 0;
-                // Get current position of steamBot and convert to CGPoints
-                b2Vec2 ballP = [ball physicsPosition];
-                CGPoint ballC = ccpMult(CGPointMake(ballP.x, ballP.y), PTM_RATIO);
+            currPressure += 0.2f;
+            
+            // Shake SteamBot after pressure hits
+            if(currPressure > 115)
+            {
                 
-                // Shake distance
-                float shakeOffset = currPressure/50;
+                [ball setMood:ANGRY];
                 
-                if(toggle)
-                {
-                    [ball setPhysicsPosition:b2Vec2FromCC(ballC.x + shakeOffset, ballC.y)];
-                }
-                else
-                {
-                     [ball setPhysicsPosition:b2Vec2FromCC(ballC.x - shakeOffset, ballC.y)];
-                }
-                toggle = !toggle;
-            } else ++shakeDelay;
+                if (shakeDelay > SHAKE) {
+                    
+                    shakeDelay = 0;
+                    // Get current position of steamBot and convert to CGPoints
+                    b2Vec2 ballP = [ball physicsPosition];
+                    CGPoint ballC = ccpMult(CGPointMake(ballP.x, ballP.y), PTM_RATIO);
+                    
+                    // Shake distance
+                    float shakeOffset = currPressure/50;
+                    
+                    if(toggle)
+                    {
+                        [ball setPhysicsPosition:b2Vec2FromCC(ballC.x + shakeOffset, ballC.y)];
+                    }
+                    else
+                    {
+                        [ball setPhysicsPosition:b2Vec2FromCC(ballC.x - shakeOffset, ballC.y)];
+                    }
+                    toggle = !toggle;
+                } else ++shakeDelay;
+            } else [ball setMood:NORMAL];
         }
+        
     }
+
+    
+    /*
     
     // Move pointer with pressure
+    // TODO: Bar should move up AND down
     pressureBarPointer.position = ccp(POINTERX + currPressure, 470);
     if (pressureBarPointer.position.x > POINTERX_MAX) {
         pressureBarPointer.position = ccp(POINTERX_MAX, 470);
+    } */
+    
+    /*
+     // Turn on and off lightning
+    if (lightningDelay > LDELAY) {
+        [self.lightning setVisible:NO];
+        lightningDelay++;
+        if (lightningDelay > (2*LDELAY)) {
+            lightningDelay = 0;
+        }
+    }else {
+        [self.lightning setVisible:YES];
+        lightningDelay++;
     }
-    if (pulseOn) {
-        // TODO: Calculate pulse for ball
-        CGPoint impulse;
-        impulse = controlButton.position;
-        
-        [ball applyLinearImpulse:b2Vec2(0,[ball mass]*JUMP_IMPULSE)point:[ball worldCenter]];
-        // NSLog(@"%f",[ball mass]*JUMP_IMPULSE);
+    
+    if (pulseOn || pulseSide) {
+        [ball applyLinearImpulse:b2Vec2([ball mass] * horizPulse,[ball mass]*vertPulse)point:[ball worldCenter]];
+        // NSLog(@"Horizontal pulse = %f",horizPulse);
     }
+     */
 }
 
 // This method called whenever screen is touched
@@ -310,6 +367,8 @@
     touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
     touchLocation = [self convertToNodeSpace:touchLocation];
     
+    [ball setMood:NORMAL];
+    
     [self selectSpriteForTouch:touchLocation];
 
     return TRUE;    
@@ -317,8 +376,11 @@
 
 -(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    controlButton.position = ccp(60, 60);
+    // position = ccp(60, 60);
     pulseOn = NO;
+    pulseSide = NO;
+    vertPulse = 0.0;
+    horizPulse = 0.0;
 }
 
 - (void)selectSpriteForTouch:(CGPoint)touchLocation {
@@ -326,10 +388,13 @@
         if(CGRectContainsPoint(controlButton.boundingBox,
                                touchLocation))
         {
-            // pulseOn = YES;
+            float bImpulse = currPressure * .4;
+            [ball applyLinearImpulse:b2Vec2(0,[ball mass]*bImpulse)point:[ball worldCenter]];
+            currPressure = 0.0;
         }
 }
 
+/*
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
     
@@ -358,13 +423,33 @@
             pos.y = 60.0;
         }
     }
+    controlButton.position = pos;
+    
+    
+    // Set ball to apply vertical force for upward motion
     if (pos.y>70) {
         pulseOn = YES;
+        vertPulse = 0.4;
     }else {
         pulseOn = NO;
+        vertPulse = 0.0;
     }
-    controlButton.position = pos;
+    
+    // Set ball for left right motion
+    if (pos.x > 70) {
+        pulseSide = YES;
+        horizPulse = 0.2;
+    }else if (pos.x < 50){
+        pulseSide = YES;
+        horizPulse = -0.2;
+    }else{
+        pulseSide = NO;
+        horizPulse = 0;
+    }
+
 }
+
+*/
 
 +(CCScene *) scene
 {
@@ -381,40 +466,35 @@
     return scene;
 }
 
--(void)bounceObject: (DynamicObject *) bouncingObject
+-(void)bounceObject: (corridor) position
 {
     // Object bounces to a stop above specified point
     
-    float mY = [bouncingObject physicsPosition].y * PTM_RATIO;
+    float mY = [ball physicsPosition].y * PTM_RATIO;
+    float distanceAboveGround = mY - position.base;
+   
+    float base = position.base;
     
-    float base = 0.0f;
-    static float targetHeight;
-    float distanceAboveGround = mY - base;
+    // Determine ball position
+    // b2Vec2  ballPos = [ball physicsPosition];
+    // CGPoint ccBallPos = ccpMult(CGPointMake(ballPos.x, ballPos.y), PTM_RATIO); // Convert to cgpoint
     
-    if (justOnce) {
-        targetHeight = mY - 100;
-        justOnce = NO;
-    }
+    b2Vec2 ObVel = [ball linearVelocity];
+    float   springConstant = position.springConstant;
+        
+    ballInPlay = true;
     
-    b2Vec2 ObVel = [bouncingObject linearVelocity];
-    float   springConstant = 0.25f;
+    //replace distanceAboveGround with the 'look ahead' distance
+    //this will look ahead 0.25 seconds - longer gives more 'damping'
+    // Higher numbers reduce 'bounce' of ball
+    distanceAboveGround += position.lookahead * ObVel.y;
         
-    //dont do anything if too far above ground
-    // All three must be true
-    if ( distanceAboveGround < targetHeight) {
+    float distanceAwayFromTargetHeight = position.targetheight - distanceAboveGround;
+    [ball applyForce:b2Vec2(0,springConstant * distanceAwayFromTargetHeight) point:[ball worldCenter]];
         
-        //replace distanceAboveGround with the 'look ahead' distance
-        //this will look ahead 0.25 seconds - longer gives more 'damping'
-        // Higher numbers reduce 'bounce' of ball
-        distanceAboveGround += 2.5f * ObVel.y;
+    //negate gravity
+    [ball applyForce:[ball mass] * -world->GetGravity() point:[ball worldCenter]];
         
-        float distanceAwayFromTargetHeight = targetHeight - distanceAboveGround;
-        [bouncingObject applyForce:b2Vec2(0,springConstant * distanceAwayFromTargetHeight) point:[bouncingObject worldCenter]];
-        
-        //negate gravity
-        [bouncingObject applyForce:[bouncingObject mass] * -world->GetGravity() point:[bouncingObject worldCenter]];
-        
-    }
 }
 
 @end

@@ -13,6 +13,17 @@
 #import "Box2D.h"
 #import "StaticObject.h"
 
+// info on where to bounce ball
+typedef struct {
+    float base;
+    float targetheight;
+    float springConstant;
+    float left;
+    float right;
+    float lookahead; // increases or decreases bounce
+    
+}corridor;
+
 @class Ball;
 @class Launcher;
 @class Piston;
@@ -26,15 +37,19 @@
     Piston              *pistonAnimation;
     StaticObject        *rightPiston;
     StaticObject        *bridge;
+    StaticObject        *leftDrain;
+    StaticObject        *rightDrain;
+    StaticObject        *roof;
     CCSprite            *pressureBar;
     CCSprite            *pressureBarPointer;
     CCSprite            *emmitterDevice;
     CCSprite            *controlButton;
-    CCSprite            *controlButtonArrows;
+    // CCSprite            *controlButtonArrows;
     float               angle;
     
     CCSpriteBatchNode   *objectLayer;  // Holds all active game objects
     CCSpriteBatchNode   *controlLayer; // Holds all HUD/control objects
+    CCLayer             *effectsLayer;
     
     bool                runOnce;
     bool                doCountDown;
@@ -43,20 +58,26 @@
     bool                justOnce;
     bool                spinnerExists;
     bool                wasNotDone;
-    BOOL                pulseOn;
+    bool                pulseOn;
+    bool                pulseSide;
+    bool                ballInPlay;
+    bool                inThePipe;
     int                 numberOpacity;
     int                 currCountdown;
     int                 currNumber;
     int                 shakeDelay;
+    int                 lightningDelay;
     
     float               curTime;
     float               floor;
     float               currPressure;
     int                 modeLevel;
     b2World             *world;
+    float               vertPulse,horizPulse;
     
     CCParticleSystemQuad    *particles;
     CCParticleSystemQuad    *podParticles;
+    CCParticleSystemQuad    *fireEffect;
     
     // CCSpriteBatchNode   *objectLayer;           // weak reference
 }
@@ -65,8 +86,8 @@
 +(CCScene *) scene;
 
 // Bounces objects on screen
--(void)bounceObject: (DynamicObject *) bouncingObject;
--(void)spriteTranslation:(CGPoint)translation;
+-(void)bounceObject: (corridor) position;
+// -(void)spriteTranslation:(CGPoint)translation;
 
 
 @end

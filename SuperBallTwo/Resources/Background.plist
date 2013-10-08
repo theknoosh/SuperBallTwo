@@ -7,15 +7,15 @@
             <key>Background.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,0},{320,1795}}</string>
+                <string>{{0,0},{320,1800}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{320,1795}}</string>
+                <string>{{0,0},{320,1800}}</string>
                 <key>sourceSize</key>
-                <string>{320,1795}</string>
+                <string>{320,1800}</string>
             </dict>
             <key>ground.psd</key>
             <dict>
@@ -40,7 +40,7 @@
             <key>size</key>
             <string>{512,2048}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:9117cc837a67177d5c55f52d9c12437f$</string>
+            <string>$TexturePacker:SmartUpdate:4e2a32828977010a44d67bdb09741fee:1/1$</string>
             <key>textureFileName</key>
             <string>Background.pvr.ccz</string>
         </dict>

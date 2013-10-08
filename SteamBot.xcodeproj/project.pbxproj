@@ -30,6 +30,8 @@
 		366D468315F1357F00485187 /* ParticleTest.plist in Resources */ = {isa = PBXBuildFile; fileRef = 366D468215F1357F00485187 /* ParticleTest.plist */; };
 		366D468715F14D9300485187 /* Launcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = 366D468615F14D9300485187 /* Launcher.mm */; };
 		36773B57156C0A41002B73C8 /* Ball.mm in Sources */ = {isa = PBXBuildFile; fileRef = 36773B56156C0A41002B73C8 /* Ball.mm */; };
+		36996FE917EE702D00F9E0C5 /* fire.plist in Resources */ = {isa = PBXBuildFile; fileRef = 36996FE817EE702D00F9E0C5 /* fire.plist */; };
+		36996FEB17EFD96800F9E0C5 /* smoke.plist in Resources */ = {isa = PBXBuildFile; fileRef = 36996FEA17EFD96800F9E0C5 /* smoke.plist */; };
 		36C7A0E9155ACC0F0048248D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36C7A0E8155ACC0F0048248D /* QuartzCore.framework */; };
 		36C7A0EB155ACC0F0048248D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36C7A0EA155ACC0F0048248D /* OpenGLES.framework */; };
 		36C7A0ED155ACC0F0048248D /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36C7A0EC155ACC0F0048248D /* OpenAL.framework */; };
@@ -232,6 +234,8 @@
 		366D468615F14D9300485187 /* Launcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Launcher.mm; sourceTree = "<group>"; };
 		36773B55156C0A41002B73C8 /* Ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ball.h; sourceTree = "<group>"; };
 		36773B56156C0A41002B73C8 /* Ball.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Ball.mm; sourceTree = "<group>"; };
+		36996FE817EE702D00F9E0C5 /* fire.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = fire.plist; path = Resources/fire.plist; sourceTree = "<group>"; };
+		36996FEA17EFD96800F9E0C5 /* smoke.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = smoke.plist; path = Resources/smoke.plist; sourceTree = "<group>"; };
 		36C7A0E4155ACC0F0048248D /* SteamBot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SteamBot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36C7A0E8155ACC0F0048248D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		36C7A0EA155ACC0F0048248D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -664,6 +668,8 @@
 		36C7A0F9155ACC0F0048248D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				36996FEA17EFD96800F9E0C5 /* smoke.plist */,
+				36996FE817EE702D00F9E0C5 /* fire.plist */,
 				36074893177422AA0008EDD5 /* Controls-hd.plist */,
 				36074894177422AA0008EDD5 /* Controls-hd.pvr.ccz */,
 				36074895177422AA0008EDD5 /* Controls.plist */,
@@ -1199,6 +1205,7 @@
 				36C7A109155ACC0F0048248D /* Icon@2x.png in Resources */,
 				36C7A10C155ACC0F0048248D /* iTunesArtwork in Resources */,
 				36C7A2CB155ACC200048248D /* blocks.png in Resources */,
+				36996FE917EE702D00F9E0C5 /* fire.plist in Resources */,
 				36EE85B0155DA19200D23733 /* Background-hd.plist in Resources */,
 				36EE85B1155DA19200D23733 /* Background-hd.pvr.ccz in Resources */,
 				36EE85B2155DA19200D23733 /* Background.plist in Resources */,
@@ -1216,6 +1223,7 @@
 				3633EE361680E79100A31630 /* FlameOut.caf in Resources */,
 				3633EE371680E79100A31630 /* FlameOut02.caf in Resources */,
 				36F3395417414C0200C5A993 /* Default-568h@2x.png in Resources */,
+				36996FEB17EFD96800F9E0C5 /* smoke.plist in Resources */,
 				36074897177422AA0008EDD5 /* Controls-hd.plist in Resources */,
 				36074898177422AA0008EDD5 /* Controls-hd.pvr.ccz in Resources */,
 				36074899177422AA0008EDD5 /* Controls.plist in Resources */,
