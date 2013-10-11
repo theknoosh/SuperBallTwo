@@ -926,6 +926,71 @@
                     </dict>
 				</array>
 			</dict>
+			<key>rightPaddle</key>
+			<dict>
+				<key>anchorpoint</key>
+                <string>{ 0.7752,0.5175 }</string>
+				<key>fixtures</key>
+				<array>
+
+					<dict>
+                        <key>density</key> <real>2</real>
+                        <key>friction</key> <real>0</real>
+                        <key>restitution</key> <real>0</real>
+                        <key>filter_categoryBits</key> <integer>1</integer>
+                        <key>filter_groupIndex</key> <integer>0</integer>
+                        <key>filter_maskBits</key> <integer>1</integer>
+                        <key>isSensor</key> <false/>
+                        <key>id</key> <string></string>
+                        <key>fixture_type</key> <string>POLYGON</string>
+
+						<key>polygons</key>
+						<array>
+							<array>	
+								<string>{ -7.710,-16.440 }</string>	
+								<string>{ -8.710,19.560 }</string>	
+								<string>{ -16.710,25.560 }</string>	
+								<string>{ -189.710,7.560 }</string>	
+								<string>{ -189.710,-8.440 }</string>	
+								<string>{ -17.710,-25.440 }</string>
+							</array>
+						</array>
+                    </dict>
+				</array>
+			</dict>
+			<key>leftPaddle</key>
+			<dict>
+				<key>anchorpoint</key>
+                <string>{ 0.2289,0.5095 }</string>
+				<key>fixtures</key>
+				<array>
+
+					<dict>
+                        <key>density</key> <real>2</real>
+                        <key>friction</key> <real>0</real>
+                        <key>restitution</key> <real>0</real>
+                        <key>filter_categoryBits</key> <integer>1</integer>
+                        <key>filter_groupIndex</key> <integer>0</integer>
+                        <key>filter_maskBits</key> <integer>1</integer>
+                        <key>isSensor</key> <false/>
+                        <key>id</key> <string></string>
+                        <key>fixture_type</key> <string>POLYGON</string>
+
+						<key>polygons</key>
+						<array>
+							<array>	
+								<string>{ 6.680,-16.550 }</string>	
+								<string>{ 15.680,-24.550 }</string>	
+								<string>{ 188.680,-7.550 }</string>	
+								<string>{ 188.680,8.450 }</string>	
+								<string>{ 15.680,25.450 }</string>	
+								<string>{ 14.680,25.450 }</string>	
+								<string>{ 6.680,15.450 }</string>
+							</array>
+						</array>
+                    </dict>
+				</array>
+			</dict>
 		</dict>
 	</dict>
 </plist>

@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#define JUMP_IMPULSE 2.0f
+#define JUMP_IMPULSE 1.0f
 
 #import "Ball.h"
 #import "GameLayer.h"

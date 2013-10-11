@@ -371,7 +371,7 @@
             <key>SteamBot.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{397,872},{61,53}}</string>
+                <string>{{503,934},{61,53}}</string>
                 <key>offset</key>
                 <string>{-1,1}</string>
                 <key>rotated</key>
@@ -384,7 +384,7 @@
             <key>SteamBotAngryBlink00.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{397,809},{61,55}}</string>
+                <string>{{446,934},{61,55}}</string>
                 <key>offset</key>
                 <string>{-1,-1}</string>
                 <key>rotated</key>
@@ -436,7 +436,7 @@
             <key>SteamBotNormalBlink00.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{397,872},{61,53}}</string>
+                <string>{{503,934},{61,53}}</string>
                 <key>offset</key>
                 <string>{-1,1}</string>
                 <key>rotated</key>
@@ -488,7 +488,7 @@
             <key>SteamBot_angry.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{397,809},{61,55}}</string>
+                <string>{{446,934},{61,55}}</string>
                 <key>offset</key>
                 <string>{-1,-1}</string>
                 <key>rotated</key>
@@ -549,6 +549,19 @@
                 <string>{{0,6},{126,240}}</string>
                 <key>sourceSize</key>
                 <string>{136,246}</string>
+            </dict>
+            <key>leftPaddle.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{455,809},{123,56}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{123,56}}</string>
+                <key>sourceSize</key>
+                <string>{123,56}</string>
             </dict>
             <key>leftPlatform.png</key>
             <dict>
@@ -614,6 +627,19 @@
                 <string>{{0,0},{177,70}}</string>
                 <key>sourceSize</key>
                 <string>{177,76}</string>
+            </dict>
+            <key>rightPaddle.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{397,809},{123,56}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{123,56}}</string>
+                <key>sourceSize</key>
+                <string>{123,56}</string>
             </dict>
             <key>rightPlatform.png</key>
             <dict>
@@ -690,7 +716,7 @@
             <key>size</key>
             <string>{1024,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:30cb049f285a723e61431df8dd6b9813:1/1$</string>
+            <string>$TexturePacker:SmartUpdate:0df09c45f2199fbb3adac47f30a9928b:1/1$</string>
             <key>textureFileName</key>
             <string>sprites.pvr.ccz</string>
         </dict>

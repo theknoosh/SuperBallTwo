@@ -122,25 +122,11 @@
         // Setup control layer
         controlLayer = [CCSpriteBatchNode batchNodeWithFile:@"Controls.pvr.ccz" capacity:150];
         [self addChild:controlLayer z:10];
-       
-        // Lose the launcher and the bridge
-        // Load physics object Launcher
-        /*
-        launcher = [[[Launcher alloc] initWithGameLayer:self] autorelease];
-        [objectLayer addChild:[launcher ccNode] z:25];
-        [launcher setPhysicsPosition:b2Vec2FromCC(60, 0)];
         
-        // Setup for the bridge
-        bridge = [[StaticObject alloc]initWithGameLayer:self andObjName:@"brokenBridge"andSpriteName:@"brokenBridge.png"];
-        [objectLayer addChild:[bridge ccNode] z:25];
-        // [bridge setPhysicsPosition:b2Vec2FromCC(160, 250)];
-        [bridge setActive:YES];
-         */
-        
-        leftDrain = [[StaticObject alloc]initWithGameLayer:self andObjName:@"leftDrain" andSpriteName:@"leftDrain.png"];
+        /*leftDrain = [[StaticObject alloc]initWithGameLayer:self andObjName:@"leftDrain" andSpriteName:@"leftDrain.png"];
         [objectLayer addChild:[leftDrain ccNode]z:25];
         [leftDrain setPhysicsPosition:b2Vec2FromCC(0.0, 0.0)];
-        [leftDrain setActive:YES];
+        [leftDrain setActive:YES];*/
         
         rightDrain = [[StaticObject alloc]initWithGameLayer:self andObjName:@"rightDrain" andSpriteName:@"rightDrain.png"];
         [objectLayer addChild:[rightDrain ccNode]z:25];
@@ -151,6 +137,57 @@
         [objectLayer addChild:[roof ccNode]z:25];
         [roof setPhysicsPosition:b2Vec2FromCC(0.0, 2400.0)];
         [roof setActive:YES];
+        
+        // ********** Revolute Joint Definitions ***********
+        
+        leftPaddle = [CCSprite spriteWithSpriteFrameName:@"leftPaddle.png"];
+        [objectLayer addChild:leftPaddle z:30];
+        rightPaddle = [CCSprite spriteWithSpriteFrameName:@"rightPaddle.png"];
+        [objectLayer addChild:rightPaddle z:25];
+        leftDrain = [CCSprite spriteWithSpriteFrameName:@"leftDrain.png"];
+        [objectLayer addChild:leftDrain z:25];
+        
+        b2BodyDef leftPaddleBodyDef;
+        leftPaddleBodyDef.type = b2_dynamicBody;
+        leftPaddleBodyDef.linearDamping = 1;
+        leftPaddleBodyDef.angularDamping = 1;
+        leftPaddleBodyDef.position.Set(500.0f/PTM_RATIO, 100.0f/PTM_RATIO);
+        // leftPaddleBodyDef.userData = leftPaddle;
+        
+        leftPaddleBody = world->CreateBody(&leftPaddleBodyDef);
+        
+        // Load fixture from shape.plist file instead of creating it here
+        [[GB2ShapeCache sharedShapeCache] addFixturesToBody:leftPaddleBody forShapeName:@"leftPaddle"];
+        [leftPaddle setAnchorPoint:[[GB2ShapeCache sharedShapeCache]anchorPointForShape:@"leftPaddle"]];
+        
+        b2BodyDef leftDrainBodyDef;
+        leftDrainBodyDef.type = b2_staticBody;
+        leftDrainBodyDef.linearDamping = 1;
+        leftDrainBodyDef.angularDamping = 1;
+
+        // leftDrainBodyDef.position.Set(300.0f/PTM_RATIO, 480.0f/PTM_RATIO);
+        // leftPaddleBodyDef.userData = leftPaddle;
+        
+        leftDrainBody = world->CreateBody(&leftDrainBodyDef);
+        
+        // Load fixture from shape.plist file instead of creating it here
+        [[GB2ShapeCache sharedShapeCache] addFixturesToBody:leftDrainBody forShapeName:@"leftDrain"];
+        [leftDrain setAnchorPoint:[[GB2ShapeCache sharedShapeCache]anchorPointForShape:@"leftDrain"]];
+        
+        // Define the joint to fix the wall to floor of bridge
+        
+        b2RevoluteJointDef  leftPaddelJointDef;
+        leftPaddelJointDef.Initialize(leftPaddleBody, leftDrainBody, b2Vec2(75.0/PTM_RATIO,390.0f/PTM_RATIO));
+        leftPaddelJointDef.enableMotor = true;
+        leftPaddelJointDef.enableLimit = true;
+        leftPaddelJointDef.motorSpeed = 0;
+        leftPaddelJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(1.65f);
+        leftPaddelJointDef.upperAngle = CC_DEGREES_TO_RADIANS(20);
+        leftPaddelJointDef.maxMotorTorque = 50;
+        leftPaddleJoint = (b2RevoluteJoint *)world->CreateJoint(&leftPaddelJointDef);
+        
+        
+        // ********** End Revolute Joint *******************
         
         float curHeight = 450.0f;
         
@@ -227,6 +264,9 @@
         [ball setActive:YES];
     }
     
+    // TODO: Cancel gravity of flippers (general code below)
+    // [ball applyForce:[ball mass]* world->GetGravity() point:[ball worldCenter]]; -- cancel gravity
+    
     // Speed of the ball, when it gets below 1, it is at
     // top of arc
     
@@ -278,7 +318,6 @@
     col1.left = 0.0f;
     col1.right = 75.0f;
     col1.lookahead = 2.5f; // 2.5f is the default value!! .25 very bouncy.
-    
     
     float distanceAboveGround = mY - col1.base;
     
@@ -336,9 +375,8 @@
     pressureBarPointer.position = ccp(POINTERX + currPressure, 470);
     if (pressureBarPointer.position.x > POINTERX_MAX) {
         pressureBarPointer.position = ccp(POINTERX_MAX, 470);
-    } */
+    }
     
-    /*
      // Turn on and off lightning
     if (lightningDelay > LDELAY) {
         [self.lightning setVisible:NO];

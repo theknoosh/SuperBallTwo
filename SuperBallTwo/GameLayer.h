@@ -37,14 +37,15 @@ typedef struct {
     Piston              *pistonAnimation;
     StaticObject        *rightPiston;
     StaticObject        *bridge;
-    StaticObject        *leftDrain;
+    CCSprite            *leftDrain;
     StaticObject        *rightDrain;
     StaticObject        *roof;
+    CCSprite            *leftPaddle;
+    CCSprite            *rightPaddle;
     CCSprite            *pressureBar;
     CCSprite            *pressureBarPointer;
     CCSprite            *emmitterDevice;
     CCSprite            *controlButton;
-    // CCSprite            *controlButtonArrows;
     float               angle;
     
     CCSpriteBatchNode   *objectLayer;  // Holds all active game objects
@@ -74,6 +75,22 @@ typedef struct {
     int                 modeLevel;
     b2World             *world;
     float               vertPulse,horizPulse;
+    
+    // ****** Revolute Joint *******
+    
+    b2Body              *leftPaddleBody;
+    b2Body              *rightPaddleBody;
+    b2Body              *leftDrainBody;
+    b2Body              *rightDrainBody;
+    b2Fixture           *leftPaddleFixture;
+    b2Fixture           *rightPaddleFixture;
+    b2Fixture           *leftDrainFixture;
+    b2Fixture           *rightDrainFixture;
+    
+    b2RevoluteJoint     *leftPaddleJoint;
+    b2RevoluteJoint     *rightPaddleJoint;
+    
+    // ****** End Revolute Joint *********
     
     CCParticleSystemQuad    *particles;
     CCParticleSystemQuad    *podParticles;
