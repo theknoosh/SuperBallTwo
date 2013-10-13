@@ -86,7 +86,7 @@
         
         // add walls to the right
         GB2Node *rightWall = [[GB2Node alloc] initWithStaticBody:nil node:nil];
-        [rightWall addEdgeFrom:b2Vec2FromCC(320, 0) to:b2Vec2FromCC(320, 20000)];
+        [rightWall addEdgeFrom:b2Vec2FromCC(320, 323) to:b2Vec2FromCC(320, 20000)];
         
         /*
          // add floor
@@ -126,12 +126,12 @@
         /*leftDrain = [[StaticObject alloc]initWithGameLayer:self andObjName:@"leftDrain" andSpriteName:@"leftDrain.png"];
         [objectLayer addChild:[leftDrain ccNode]z:25];
         [leftDrain setPhysicsPosition:b2Vec2FromCC(0.0, 0.0)];
-        [leftDrain setActive:YES];*/
+        [leftDrain setActive:YES];
         
         rightDrain = [[StaticObject alloc]initWithGameLayer:self andObjName:@"rightDrain" andSpriteName:@"rightDrain.png"];
         [objectLayer addChild:[rightDrain ccNode]z:25];
         [rightDrain setPhysicsPosition:b2Vec2FromCC(320.0, 0.0)];
-        [rightDrain setActive:YES];
+        [rightDrain setActive:YES];*/
         
         roof = [[StaticObject alloc]initWithGameLayer:self andObjName:@"roof" andSpriteName:@"roof.png"];
         [objectLayer addChild:[roof ccNode]z:25];
@@ -141,17 +141,19 @@
         // ********** Revolute Joint Definitions ***********
         
         leftPaddle = [CCSprite spriteWithSpriteFrameName:@"leftPaddle.png"];
-        [objectLayer addChild:leftPaddle z:30];
+        [objectLayer addChild:leftPaddle z:20];
         rightPaddle = [CCSprite spriteWithSpriteFrameName:@"rightPaddle.png"];
-        [objectLayer addChild:rightPaddle z:25];
+        [objectLayer addChild:rightPaddle z:20];
         leftDrain = [CCSprite spriteWithSpriteFrameName:@"leftDrain.png"];
         [objectLayer addChild:leftDrain z:25];
+        rightDrain = [CCSprite spriteWithSpriteFrameName:@"rightDrain.png"];
+        [objectLayer addChild:rightDrain z:25];
         
         b2BodyDef leftPaddleBodyDef;
         leftPaddleBodyDef.type = b2_dynamicBody;
         leftPaddleBodyDef.linearDamping = 1;
         leftPaddleBodyDef.angularDamping = 1;
-        leftPaddleBodyDef.position.Set(500.0f/PTM_RATIO, 100.0f/PTM_RATIO);
+        leftPaddleBodyDef.position.Set(80.0f/PTM_RATIO, 128.0f/PTM_RATIO);
         // leftPaddleBodyDef.userData = leftPaddle;
         
         leftPaddleBody = world->CreateBody(&leftPaddleBodyDef);
@@ -160,12 +162,25 @@
         [[GB2ShapeCache sharedShapeCache] addFixturesToBody:leftPaddleBody forShapeName:@"leftPaddle"];
         [leftPaddle setAnchorPoint:[[GB2ShapeCache sharedShapeCache]anchorPointForShape:@"leftPaddle"]];
         
+        b2BodyDef rightPaddleBodyDef;
+        rightPaddleBodyDef.type = b2_dynamicBody;
+        rightPaddleBodyDef.linearDamping = 1;
+        rightPaddleBodyDef.angularDamping = 1;
+        rightPaddleBodyDef.position.Set(320.0f/PTM_RATIO, 128.0f/PTM_RATIO);
+        // leftPaddleBodyDef.userData = leftPaddle;
+        
+        rightPaddleBody = world->CreateBody(&rightPaddleBodyDef);
+        
+        // Load fixture from shape.plist file instead of creating it here
+        [[GB2ShapeCache sharedShapeCache] addFixturesToBody:rightPaddleBody forShapeName:@"rightPaddle"];
+        [rightPaddle setAnchorPoint:[[GB2ShapeCache sharedShapeCache]anchorPointForShape:@"rightPaddle"]];
+        
         b2BodyDef leftDrainBodyDef;
         leftDrainBodyDef.type = b2_staticBody;
         leftDrainBodyDef.linearDamping = 1;
         leftDrainBodyDef.angularDamping = 1;
 
-        // leftDrainBodyDef.position.Set(300.0f/PTM_RATIO, 480.0f/PTM_RATIO);
+        leftDrainBodyDef.position.Set(80.0f/PTM_RATIO, 128.0f/PTM_RATIO);
         // leftPaddleBodyDef.userData = leftPaddle;
         
         leftDrainBody = world->CreateBody(&leftDrainBodyDef);
@@ -174,18 +189,48 @@
         [[GB2ShapeCache sharedShapeCache] addFixturesToBody:leftDrainBody forShapeName:@"leftDrain"];
         [leftDrain setAnchorPoint:[[GB2ShapeCache sharedShapeCache]anchorPointForShape:@"leftDrain"]];
         
+        b2BodyDef rightDrainBodyDef;
+        rightDrainBodyDef.type = b2_staticBody;
+        rightDrainBodyDef.linearDamping = 1;
+        rightDrainBodyDef.angularDamping = 1;
+        
+        rightDrainBodyDef.position.Set(320.0f/PTM_RATIO, 128.0f/PTM_RATIO);
+        // leftPaddleBodyDef.userData = leftPaddle;
+        
+        rightDrainBody = world->CreateBody(&rightDrainBodyDef);
+    
+        
+        // Load fixture from shape.plist file instead of creating it here
+        [[GB2ShapeCache sharedShapeCache] addFixturesToBody:rightDrainBody forShapeName:@"rightDrain"];
+        [rightDrain setAnchorPoint:[[GB2ShapeCache sharedShapeCache]anchorPointForShape:@"rightDrain"]];
+        
+        
+        
         // Define the joint to fix the wall to floor of bridge
         
         b2RevoluteJointDef  leftPaddelJointDef;
-        leftPaddelJointDef.Initialize(leftPaddleBody, leftDrainBody, b2Vec2(75.0/PTM_RATIO,390.0f/PTM_RATIO));
+        leftPaddelJointDef.Initialize(leftPaddleBody, leftDrainBody, b2Vec2(80.0/PTM_RATIO,128.0f/PTM_RATIO));
         leftPaddelJointDef.enableMotor = true;
         leftPaddelJointDef.enableLimit = true;
+        leftPaddelJointDef.collideConnected = false;
         leftPaddelJointDef.motorSpeed = 0;
-        leftPaddelJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(1.65f);
-        leftPaddelJointDef.upperAngle = CC_DEGREES_TO_RADIANS(20);
-        leftPaddelJointDef.maxMotorTorque = 50;
+        leftPaddelJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(-75.0f);
+        leftPaddelJointDef.upperAngle = CC_DEGREES_TO_RADIANS(0.0f);
+        leftPaddelJointDef.maxMotorTorque = 200;
+        leftPaddelJointDef.referenceAngle = -0;
         leftPaddleJoint = (b2RevoluteJoint *)world->CreateJoint(&leftPaddelJointDef);
         
+        b2RevoluteJointDef  rightPaddelJointDef;
+        rightPaddelJointDef.Initialize(rightPaddleBody, rightDrainBody, b2Vec2(320.0/PTM_RATIO,128.0f/PTM_RATIO));
+        rightPaddelJointDef.enableMotor = true;
+        rightPaddelJointDef.enableLimit = true;
+        rightPaddelJointDef.collideConnected = false;
+        rightPaddelJointDef.motorSpeed = 0;
+        rightPaddelJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(0.0f);
+        rightPaddelJointDef.upperAngle = CC_DEGREES_TO_RADIANS(75.0f);
+        rightPaddelJointDef.maxMotorTorque = 4800;
+        rightPaddelJointDef.referenceAngle = 0;
+        rightPaddleJoint = (b2RevoluteJoint *)world->CreateJoint(&rightPaddelJointDef);
         
         // ********** End Revolute Joint *******************
         
@@ -264,6 +309,20 @@
         [ball setActive:YES];
     }
     
+    
+    //Track CCSprites to B2Body objects
+    leftDrain.position = CGPointMake(leftDrainBody->GetPosition().x * PTM_RATIO, leftDrainBody->GetPosition().y * PTM_RATIO);
+    leftDrain.rotation = -1 * CC_RADIANS_TO_DEGREES(leftDrainBody->GetAngle());
+    
+    leftPaddle.position = CGPointMake(leftPaddleBody->GetPosition().x * PTM_RATIO, leftPaddleBody->GetPosition().y * PTM_RATIO);
+    leftPaddle.rotation = -1 * CC_RADIANS_TO_DEGREES(leftPaddleBody->GetAngle());
+    
+    rightDrain.position = CGPointMake(rightDrainBody->GetPosition().x * PTM_RATIO, rightDrainBody->GetPosition().y * PTM_RATIO);
+    rightDrain.rotation = -1 * CC_RADIANS_TO_DEGREES(rightDrainBody->GetAngle());
+    
+    rightPaddle.position = CGPointMake(rightPaddleBody->GetPosition().x * PTM_RATIO, rightPaddleBody->GetPosition().y * PTM_RATIO);
+    rightPaddle.rotation = -1 * CC_RADIANS_TO_DEGREES(rightPaddleBody->GetAngle());
+    
     // TODO: Cancel gravity of flippers (general code below)
     // [ball applyForce:[ball mass]* world->GetGravity() point:[ball worldCenter]]; -- cancel gravity
     
@@ -273,8 +332,6 @@
     b2Vec2 currentVelocity = [ball linearVelocity];
     float currentSpeed = currentVelocity.Length();
     
- 
-  
     
     // Track position of ball in relation to screen
     float mY = [ball physicsPosition].y * PTM_RATIO;
@@ -419,6 +476,8 @@
     pulseSide = NO;
     vertPulse = 0.0;
     horizPulse = 0.0;
+    leftPaddleJoint->SetMotorSpeed(20.0f);
+    rightPaddleJoint->SetMotorSpeed(-20.0f);
 }
 
 - (void)selectSpriteForTouch:(CGPoint)touchLocation {
@@ -429,6 +488,9 @@
             float bImpulse = currPressure * .4;
             [ball applyLinearImpulse:b2Vec2(0,[ball mass]*bImpulse)point:[ball worldCenter]];
             currPressure = 0.0;
+        }else {
+            leftPaddleJoint->SetMotorSpeed(-20.0f);
+            rightPaddleJoint->SetMotorSpeed(20.0f);
         }
 }
 

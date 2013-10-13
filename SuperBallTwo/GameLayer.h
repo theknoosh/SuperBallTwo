@@ -38,7 +38,7 @@ typedef struct {
     StaticObject        *rightPiston;
     StaticObject        *bridge;
     CCSprite            *leftDrain;
-    StaticObject        *rightDrain;
+    CCSprite            *rightDrain;
     StaticObject        *roof;
     CCSprite            *leftPaddle;
     CCSprite            *rightPaddle;
